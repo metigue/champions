@@ -1,0 +1,92 @@
+# Environment variables
+.env
+.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+venv_alt/
+venv_system/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+.DS_Store?
+ehthumbs.db
+Icon?
+.directory
+.Trashes
+*.nfs*
+
+# Logs
+*.log
+debug_*.txt
+build_debug.txt
+build_output.txt
+debug_*.py
+debug*.txt
+full_build.txt
+science_debug.txt
+
+# Local config
+config_local.py
+local_settings.py
+
+# Qwen and other documentation files
+QWEN.md
+*.md.bak
+
+# Database and output files (if not needed in repo)
+*.db
+*.json  # except champions_database.json if needed - we'll specify it below
+
+# Keep only the main database file if it's part of the repo
+!champions_database.json
+
+# Data files that might be large
+data/
+*.csv
+*.xlsx
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.cov/

@@ -1,0 +1,86 @@
+Champions Database Analysis:
+Total champions in database: 248
+
+Nico Minoru:
+  Full Name: Nico Minoru
+  Class: Mystic
+  Rank: 1
+  Tier: Above All
+  Ranking: Mystic #1
+  BG Rating: 10
+  BG Type: Dual Threat
+  Has Relic Needed: False
+  Early Prediction: False
+  Other Symbols: []
+
+Venom:
+  Full Name: Venom
+  Class: Cosmic
+  Rank: 7
+  Tier: Scorching
+  Ranking: Cosmic #7
+  BG Rating: 9
+  BG Type: Dual Threat
+  Has Relic Needed: False
+  Early Prediction: False
+  Other Symbols: []
+
+Baron Zemo:
+  Full Name: Baron Zemo
+  Class: Skill
+  Rank: 19
+  Tier: Super Hot
+  Ranking: Skill #19
+  BG Rating: 7
+  BG Type: Dual Threat
+  Has Relic Needed: False
+  Early Prediction: False
+  Other Symbols: []
+
+Tigra:
+  Full Name: Tigra
+  Class: Mystic
+  Rank: 2
+  Tier: Above All
+  Ranking: Mystic #2
+  BG Rating: 10
+  BG Type: Dual Threat
+  Has Relic Needed: False
+  Early Prediction: False
+  Other Symbols: []
+
+Spider-Man:
+  Full Name: Spider-Man
+  Class: Science
+  Rank: 38
+  Tier: Hot
+  Ranking: Science #38
+  BG Rating: 6
+  BG Type: Attacker
+  Has Relic Needed: False
+  Early Prediction: False
+  Other Symbols: []
+
+Enchantress:
+  Full Name: Enchantress
+  Class: Mystic
+  Rank: 28
+  Tier: Hot
+  Ranking: Mystic #28
+  BG Rating: 10
+  BG Type: Attacker
+  Has Relic Needed: False
+  Early Prediction: False
+  Other Symbols: []
+
+Doctor Doom:
+  Full Name: Doctor Doom
+  Class: Mystic
+  Rank: 8
+  Tier: Scorching
+  Ranking: Mystic #8
+  BG Rating: 7
+  BG Type: Attacker
+  Has Relic Needed: False
+  Early Prediction: False
+  Other Symbols: []
