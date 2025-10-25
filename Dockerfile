@@ -11,4 +11,4 @@ COPY . .
 RUN useradd --create-home --shell /bin/bash app
 USER app
 
-CMD ["python", "bot_main.py"]
+CMD ["sh", "-c", "python3 -m http.server ${PORT} & exec python3 bot_main.py"]
