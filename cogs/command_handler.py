@@ -97,22 +97,17 @@ class CommandHandler:
         if not champions:
             return f"Sorry, I couldn't find information about '{name}'. Please check the spelling and try again."
         
-        response = f"**Rank-up Information for {name}:**\n\n"
+        response = "**Champion Information:**\n\n"
         
         for champion in champions:
-            response += f"**Source**: {champion.source}\n"
+            rating_str = f"{champion.rating}/10" if champion.rating else "No rating"
+            type_str = f" ({champion.battlegrounds_type})" if champion.battlegrounds_type else ""
             
-            # Format category to show ranking if it's in the format "Class #N"
-            if champion.category and '#' in champion.category:
-                response += f"Ranking: {champion.category} | "
-            else:
-                response += f"Category: {champion.category} | "
-            
-            response += f"Tier: {champion.tier}\n"
-            
-            # Show Battlegrounds scores from the vega source
-            if champion.source == "vega" and champion.rating:
-                response += f"Battlegrounds: Attacker {champion.rating}/10\n"
+            # For single champion info, don't show numbering like in multi-rankups
+            response += f"**{champion.name}**\n"
+            response += f"   - Battlegrounds Rating: {rating_str}{type_str}\n"
+            response += f"   - Class Ranking: {champion.category}\n"
+            response += f"   - Tier: {champion.tier}\n"
             
             # Translate emoji symbols to their meanings (as specified by user)
             if champion.symbols:
@@ -147,9 +142,9 @@ class CommandHandler:
                         # If symbol not in our known meanings, just show it
                         translated_notes.append(symbol)
                 
-                response += f"Special Notes: {', '.join(translated_notes)}\n"
+                response += f"   - Special Notes: {', '.join(translated_notes)}\n"
             else:
-                response += "Special Notes: None\n"
+                response += f"   - Special Notes: None\n"
             
             # Provide rank-up advice based on tier/rating
             tier_order = {
@@ -162,7 +157,7 @@ class CommandHandler:
             }
             
             advice = tier_order.get(champion.tier, "Assess based on your team composition")
-            response += f"Rank-up Priority: {advice}\n\n"
+            response += f"   - Rank-up Priority: {advice}\n\n"
         
         return response
 

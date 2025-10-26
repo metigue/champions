@@ -1,0 +1,315 @@
+ 		Champion 	Release Date 	Class
+		Franken-Castle 	Coming in October 2025 	Skill
+		Dracula 	October 16, 2025 	Mystic
+File:Anti-Venomoid portrait.png 	File:Anti-Venomoid featured.png 	Anti-Venomoid 	October 8, 2025 	Cosmic / Tech / Mutant / Skill / Science / Mystic
+		Mr. Knight 	September 25, 2025 	Skill
+		Silver Samurai 	September 11, 2025 	Mutant
+		Cassandra Nova 	August 28, 2025 	Mutant
+		Solvarch 	August 14, 2025 	Tech
+		High Evolutionary 	July 24, 2025 	Science
+	File:Doombot featured.png 	Doombot 	July 24, 2025 	Cosmic / Tech / Mutant / Skill / Science / Mystic
+		The Maker 	July 10, 2025 	Tech
+		Karolina Dean 	June 26, 2025 	Cosmic
+		Nico Minoru 	June 12, 2025 	Mystic
+		Yelena Belova 	May 18, 2025 	Skill
+		Dark Phoenix 	May 7, 2025 	Cosmic
+		Spider-Woman (Jessica Drew) 	April 17, 2025 	Science
+		Lumatrix 	April 9, 2025 	Skill
+		Bastion 	March 27, 2025 	Tech
+		Jean Grey 	March 13, 2025 	Mutant
+		Falcon (Joaquín Torres) 	February 27, 2025 	Science
+		Arnim Zola 	February 13, 2025 	Tech
+		Gentle 	January 30, 2025 	Mutant
+		Okoye 	January 16, 2025 	Skill
+		Thanos (Deathless) 	January 8, 2025 	Cosmic
+		She-Hulk (Deathless) 	December 20, 2024 	Science
+		Isophyne 	December 19, 2024 	Mystic
+		Dazzler 	November 28, 2024 	Mutant
+		Spiral 	November 14, 2024 	Mystic
+		Henchpool 	November 13, 2024 	Cosmic / Tech / Mutant / Skill / Science / Mystic
+		Jack O'Lantern 	October 31, 2024 	Tech
+		Scream 	October 17, 2024 	Cosmic
+		Shathra 	September 26, 2024 	Mystic
+		Count Nefaria 	September 12, 2024 	Science
+		Enchantress 	August 29, 2024 	Mystic
+		Beta Ray Bill 	August 15, 2024 	Cosmic
+		The Leader 	August 1, 2024 	Science
+		Vision (Deathless) 	July 20, 2024 	Tech
+		Patriot 	July 18, 2024 	Skill
+		Northstar 	June 27, 2024 	Mutant
+		Arcade 	June 13, 2024 	Tech
+		Silver Sable 	May 30, 2024 	Skill
+		Negasonic Teenage Warhead 	May 16, 2024 	Mutant
+		Spider-Punk 	April 25, 2024 	Science
+		Prowler 	April 11, 2024 	Tech
+		King Groot (Deathless) 	April 4, 2024 	Cosmic
+		The Destroyer 	March 28, 2024 	Mystic
+		The Serpent 	March 14, 2024 	Cosmic
+		Dust 	February 29, 2024 	Mutant
+		Ironheart 	February 15, 2024 	Tech
+		White Tiger 	February 1, 2024 	Mystic
+		Bullseye 	January 18, 2024 	Skill
+		Guillotine (Deathless) 	December 20, 2023 	Mystic
+		Onslaught 	December 14, 2023 	Mutant
+		Chee'ilth 	November 30, 2023 	Skill
+		Kushala 	November 16, 2023 	Mystic
+		Maestro (Cosmic) 	November 15, 2023 	Cosmic
+		Werewolf By Night 	October 27, 2023 	Mystic
+		Morbius 	October 13, 2023 	Science
+		Gladiator 	September 14, 2023 	Cosmic
+		Vox 	August 31, 2023 	Cosmic
+		Photon 	August 17, 2023 	Science
+		Kindred 	August 3, 2023 	Mystic
+		Silk 	July 20, 2023 	Science
+		Lady Deathstrike 	June 29, 2023 	Tech
+		Dani Moonstar 	June 15, 2023 	Mutant
+		Adam Warlock 	May 25, 2023 	Cosmic
+		Moondragon 	May 11, 2023 	Skill
+		Sandman 	April 27, 2023 	Science
+		Shocker 	April 13, 2023 	Tech
+		Kate Bishop 	March 30, 2023 	Skill
+		Viv Vision 	March 16, 2023 	Tech
+		Ant-Man (Future) 	March 2, 2023 	Tech
+		Cassie Lang 	February 16, 2023 	Science
+		Baron Zemo 	January 26, 2023 	Skill
+		Absorbing Man 	January 19, 2023 	Mystic
+		Jessica Jones 	December 22, 2022 	Science
+		Mantis 	December 15, 2022 	Skill
+		Attuma 	December 1, 2022 	Skill
+		Shuri 	November 17, 2022 	Tech
+		Spot 	October 27, 2022 	Science
+		Spider-Man (Supreme) 	October 13, 2022 	Mystic
+		Iron Man (Infamous) 	September 29, 2022 	Tech
+		Titania 	September 15, 2022 	Science
+		Quicksilver 	August 26, 2022 	Science
+		Galan 	August 11, 2022 	Cosmic
+		Valkyrie 	July 28, 2022 	Skill
+		Gorr 	July 14, 2022 	Cosmic
+		Wiccan 	June 30, 2022 	Mystic
+		Hulkling 	June 16, 2022 	Cosmic
+		Wong 	May 26, 2022 	Mystic
+		Rintrah 	May 12, 2022 	Mystic
+		Scorpion 	April 28, 2022 	Science
+		Black Cat 	April 14, 2022 	Skill
+		Omega Sentinel 	March 31, 2022 	Tech
+		Captain Britain 	March 17, 2022 	Mutant
+		Misty Knight 	March 3, 2022 	Skill
+		Captain America (Sam Wilson) 	February 18, 2022 	Tech
+		Sauron 	January 27, 2022 	Mutant
+		Toad 	January 13, 2022 	Mutant
+		Kraven 	December 9, 2021 	Skill
+		Ikaris 	November 25, 2021 	Cosmic
+		Sersi 	November 11, 2021 	Cosmic
+		Knull 	October 28, 2021 	Cosmic
+		Anti-Venom 	October 14, 2021 	Science
+		Summoned Symbiote 	October 6, 2021 	Combined
+		Nimrod 	September 23, 2021 	Tech
+		Kitty Pryde 	September 9, 2021 	Mutant
+		Peni Parker 	August 26, 2021 	Tech
+		Spider-Man 2099 	August 12, 2021 	Science
+		America Chavez 	July 29, 2021 	Mystic
+		Hercules 	July 15, 2021 	Cosmic
+		The Overseer 	June 24, 2021 	Science
+		Purgatory 	June 10, 2021 	Mystic
+		Scarlet Witch 	June 7, 2021 	Mystic
+		Mister Negative 	May 27, 2021 	Science
+		Shang-Chi 	May 13, 2021 	Skill
+		Silver Centurion 	April 29, 2021 	Tech
+		Jabari Panther 	April 15, 2021 	Skill
+		Odin 	March 25, 2021 	Cosmic
+		Mangog 	March 11, 2021 	Mystic
+		Super-Skrull 	February 25, 2021 	Cosmic
+		Psycho-Man 	February 11, 2021 	Tech
+		Stryfe 	January 28, 2021 	Mutant
+		Jubilee 	January 14, 2021 	Mutant
+		Spider-Ham 	December 10, 2020 	Science
+		Abomination (Immortal) 	November 26, 2020 	Science
+		Hulk (Immortal) 	November 12, 2020 	Science
+		Cosmic Ghost Rider 	October 22, 2020 	Cosmic
+		Red Goblin 	October 8, 2020 	Cosmic
+		Apocalypse 	September 24, 2020 	Mutant
+		Professor X 	September 10, 2020 	Mutant
+		Platinumpool 	September 2, 2020 	Mutant
+		Dragon Man 	August 27, 2020 	Mystic
+		Air-Walker 	August 13, 2020 	Cosmic
+		Sasquatch 	July 23, 2020 	Mystic
+		Guardian 	July 9, 2020 	Tech
+		Hit-Monkey 	June 25, 2020 	Skill
+		Tigra 	June 11, 2020 	Mystic
+		Red Guardian 	May 28, 2020 	Science
+		Black Widow (Deadly Origin) 	May 14, 2020 	Skill
+		Storm (Pyramid X) 	April 23, 2020 	Mutant
+		Sorcerer Supreme 	April 9, 2020 	Mystic
+		Terrax 	March 26, 2020 	Cosmic
+		Mole Man 	March 12, 2020 	Skill
+		Wolverine (Weapon X) 	March 11, 2020 	Mutant
+		Mojo 	February 27, 2020 	Mystic
+		Longshot 	February 13, 2020 	Mystic
+		Nova 	January 23, 2020 	Cosmic
+		Squirrel Girl 	January 9, 2020 	Skill
+		Silver Surfer 	December 12, 2019 	Cosmic
+		Mister Fantastic 	November 28, 2019 	Science
+		Doctor Doom 	November 14, 2019 	Mystic
+		Guillotine 2099 	October 31, 2019 	Tech
+		Man-Thing 	October 17, 2019 	Mystic
+		Elsa Bloodstone 	October 3, 2019 	Skill
+		Vision (Aarkus) 	September 19, 2019 	Cosmic
+		Black Widow (Claire Voyant) 	September 5, 2019 	Mystic
+		Warlock 	August 22, 2019 	Tech
+		Sunspot 	August 8, 2019 	Mutant
+		Mysterio 	July 25, 2019 	Tech
+		Spider-Man (Stealth Suit) 	July 11, 2019 	Skill
+		Invisible Woman 	June 27, 2019 	Science
+		Namor 	June 13, 2019 	Mutant
+		Ebony Maw 	May 31, 2019 	Mystic
+		Cull Obsidian 	May 16, 2019 	Cosmic
+		Ronin 	May 2, 2019 	Skill
+		Human Torch 	April 18, 2019 	Science
+		Annihilus 	April 4, 2019 	Cosmic
+		Nick Fury 	March 12, 2019 	Skill
+		Captain Marvel 	March 7, 2019 	Cosmic
+		Mister Sinister 	February 11, 2019 	Mutant
+		Havok 	February 7, 2019 	Mutant
+		Diablo 	January 24, 2019 	Mystic
+		Thing 	January 10, 2019 	Science
+		Darkhawk 	December 20, 2018 	Tech
+		Night Thrasher 	December 6, 2018 	Skill
+		Ægon 	November 22, 2018 	Skill
+		The Champion 	November 8, 2018 	Cosmic
+		Venom the Duck 	October 16, 2018 	Cosmic
+		Symbiote Supreme 	October 11, 2018 	Mystic
+		Summoned Symbioid 	October 2, 2018 	Combined
+		Emma Frost 	September 27, 2018 	Mutant
+		Omega Red 	September 13, 2018 	Mutant
+		Korg 	August 30, 2018 	Skill
+		Heimdall 	August 16, 2018 	Cosmic
+		Red Skull 	August 2, 2018 	Tech
+		Ghost 	July 19, 2018 	Tech
+		Wasp 	July 5, 2018 	Science
+		Masacre 	June 21, 2018 	Skill
+		Domino 	June 7, 2018 	Mutant
+		Goldpool 	June 6, 2018 	Mutant
+		Iron Man (Infinity War) 	May 24, 2018 	Tech
+		Captain America (Infinity War) 	May 10, 2018 	Science
+		Corvus Glaive 	April 26, 2018 	Cosmic
+		Proxima Midnight 	April 12, 2018 	Cosmic
+		Sabretooth 	March 29, 2018 	Mutant
+		Bishop 	March 14, 2018 	Mutant
+		Sentinel 	March 1, 2018 	Tech
+		Killmonger 	February 15, 2018 	Skill
+		Hulk (Ragnarok) 	February 1, 2018 	Science
+		Void 	January 18, 2018 	Science
+		Sentry 	January 4, 2018 	Science
+		M.O.D.O.K. 	December 21, 2017 	Science
+		Taskmaster 	December 7, 2017 	Skill
+		Hela 	November 23, 2017 	Cosmic
+		Thor (Ragnarok) 	November 9, 2017 	Cosmic
+		Blade 	October 26, 2017 	Skill
+		Morningstar 	October 12, 2017 	Mystic
+		Mephisto 	September 28, 2017 	Mystic
+		Medusa 	September 14, 2017 	Cosmic
+		Kingpin 	August 31, 2017 	Skill
+		Doctor Octopus 	August 17, 2017 	Tech
+		Green Goblin 	August 3, 2017 	Tech
+		Vulture 	July 20, 2017 	Tech
+		Spider-Man (Stark Enhanced) 	July 6, 2017 	Tech
+		Punisher 2099 	June 29, 2017 	Tech
+		Carnage 	June 8, 2017 	Cosmic
+		Yondu 	May 25, 2017 	Tech
+		Nebula 	May 11, 2017 	Tech
+		King Groot 	April 27, 2017 	Cosmic
+		Angela 	April 13, 2017 	Cosmic
+		Iceman 	March 30, 2017 	Mutant
+		Psylocke 	March 16, 2017 	Mutant
+		Archangel 	March 2, 2017 	Mutant
+		Dormammu 	February 16, 2017 	Mystic
+		The Hood 	February 2, 2017 	Mystic
+		Cable 	January 19, 2017 	Mutant
+		Gwenpool 	January 5, 2017 	Skill
+		Howard the Duck 	December 22, 2016 	Tech
+		Hyperion 	December 8, 2016 	Cosmic
+		Doctor Voodoo 	November 24, 2016 	Mystic
+		Mordo 	November 10, 2016 	Mystic
+		Ghost Rider 	October 27, 2016 	Mystic
+		Phoenix 	October 13, 2016 	Cosmic
+		Quake 	September 29, 2016 	Science
+		Rogue 	September 15, 2016 	Mutant
+		Karnak 	September 1, 2016 	Skill
+		Gambit 	August 18, 2016 	Mutant
+		Ultron (Classic) 	August 17, 2016 	Tech
+		Thanos 	August 17, 2016 	Cosmic
+		Loki 	August 4, 2016 	Mystic
+		Beast 	July 21, 2016 	Mutant
+		Nightcrawler 	July 7, 2016 	Mutant
+		Civil Warrior 	June 30, 2016 	Tech
+		Falcon 	June 9, 2016 	Skill
+		Black Panther (Civil War) 	May 26, 2016 	Skill
+		Crossbones 	May 12, 2016 	Skill
+		Red Hulk 	April 28, 2016 	Science
+		Agent Venom 	April 14, 2016 	Skill
+		Ms. Marvel (Kamala Khan) 	March 31, 2016 	Cosmic
+		Wolverine (X-23) 	March 17, 2016 	Mutant
+		She-Hulk 	March 3, 2016 	Science
+		Venompool 	February 18, 2016 	Cosmic
+		Old Man Logan 	February 4, 2016 	Mutant
+		Cyclops (Blue Team) 	January 21, 2016 	Mutant
+		Spider-Man (Miles Morales) 	January 7, 2016 	Science
+		Groot 	December 24, 2015 	Cosmic
+		Thor (Jane Foster) 	December 10, 2015 	Mystic
+		Luke Cage 	November 26, 2015 	Science
+		Daredevil (Hell's Kitchen) 	November 19, 2015 	Skill
+		Spider-Gwen 	November 12, 2015 	Science
+		Venom 	October 29, 2015 	Cosmic
+		Guillotine 	October 22, 2015 	Mystic
+		Joe Fixit 	October 15, 2015 	Science
+		Elektra 	October 8, 2015 	Skill
+		Moon Knight 	September 24, 2015 	Skill
+		Deadpool (X-Force) 	September 17, 2015 	Mutant
+		Spider-Man (Symbiote) 	September 10, 2015 	Cosmic
+		Magneto (House of X) 	August 27, 2015 	Mutant
+		Iron Fist (Immortal) 	August 20, 2015 	Mystic
+		War Machine 	August 13, 2015 	Tech
+		Yellowjacket 	July 30, 2015 	Science
+		Ant-Man 	July 9, 2015 	Science
+		Iron Patriot 	July 2, 2015 	Tech
+		Captain America (WWII) 	July 2, 2015 	Science
+		Magneto 	June 18, 2015 	Mutant
+		Ultron 	June 4, 2015 	Tech
+		Hulkbuster 	May 21, 2015 	Tech
+		Vision (Age of Ultron) 	May 14, 2015 	Tech
+		Black Widow 	May 7, 2015 	Skill
+		Daredevil (Classic) 	April 16, 2015 	Skill
+		Ms. Marvel 	April 2, 2015 	Cosmic
+		Doctor Strange 	March 19, 2015 	Mystic
+		Rocket Raccoon 	March 5, 2015 	Tech
+		Unstoppable Colossus 	February 25, 2015 	Mystic
+		Superior Iron Man 	February 19, 2015 	Cosmic
+		Electro 	February 6, 2015 	Science
+		Magik 	January 22, 2015 	Mystic
+		Captain Marvel (Classic) 	January 8, 2015 	Cosmic
+		Storm 	December 10, 2014 	Mutant
+		Thor 	December 10, 2014 	Cosmic
+		Deadpool 	December 10, 2014 	Mutant
+		Colossus 	December 10, 2014 	Mutant
+		Cyclops (New Xavier School) 	December 10, 2014 	Mutant
+		Wolverine 	December 10, 2014 	Mutant
+		Winter Soldier 	December 10, 2014 	Skill
+		Black Panther 	December 10, 2014 	Skill
+		Captain America 	December 10, 2014 	Science
+		Black Bolt 	December 10, 2014 	Cosmic
+		Gamora 	December 10, 2014 	Cosmic
+		Ronan 	December 10, 2014 	Cosmic
+		Iron Fist 	December 10, 2014 	Mystic
+		Iron Man 	December 10, 2014 	Tech
+		Vision 	December 10, 2014 	Tech
+		Star-Lord 	December 10, 2014 	Tech
+		Spider-Man (Classic) 	December 10, 2014 	Science
+		Scarlet Witch (Classic) 	December 10, 2014 	Mystic
+		Drax 	December 10, 2014 	Cosmic
+		Hawkeye 	December 10, 2014 	Skill
+		Hulk 	December 10, 2014 	Science
+		Punisher 	December 10, 2014 	Skill
+		Juggernaut 	December 10, 2014 	Mystic
+		Kang the Conqueror 	December 10, 2014 	Tech
+		Abomination 	December 10, 2014 	Science
+		Rhino 	December 10, 2014 	Science 
