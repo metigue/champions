@@ -1,9 +1,10 @@
 import discord
 from discord.ext import commands
-from data_manager import DataManager
-from champion_model import Champion, ChampionRecommendation
+from data_manager_json import DataManager
+from champion_model import Champion
 import logging
 import re
+from difflib import get_close_matches, SequenceMatcher
 
 class CommandHandler:
     """Handles all bot commands and their logic"""
@@ -83,7 +84,7 @@ class CommandHandler:
             
             info += f"Special Notes: {', '.join(translated_notes)}\n"
         else:
-            info += "Special Notes: No special notes\n"
+            info += "Special Notes: None\n"
         
         info += f"Source: {champion.source}"
         
@@ -149,139 +150,6 @@ class CommandHandler:
                 response += f"Special Notes: {', '.join(translated_notes)}\n"
             else:
                 response += "Special Notes: None\n"
-            
-            # Provide rank-up advice based on tier/rating
-            tier_order = {
-                "Above All": "TOP TIER - Definitely prioritize rank-up!",
-                "Scorching": "HIGH TIER - Strong recommendation for rank-up",
-                "Super Hot": "HIGH TIER - Good for rank-up when possible",
-                "Hot": "MEDIUM TIER - Consider for rank-up",
-                "Mild": "LOWER TIER - Lower priority for rank-up",
-                "Information": "LOW TIER - Lowest priority for rank-up"
-            }
-            
-            advice = tier_order.get(champion.tier, "Assess based on your team composition")
-            response += f"Rank-up Priority: {advice}\n\n"
-        
-        return response
-
-    def get_champion_rankup_info(self, name: str) -> str:
-        """Get specific rankup information for a champion"""
-        champions = self.data_manager.get_champion_by_name(name)
-        
-        if not champions:
-            return f"Sorry, I couldn't find information about '{name}'. Please check the spelling and try again."
-        
-        response = f"**Rank-up Information for {name}:**\n\n"
-        
-        for champion in champions:
-            rating_str = f"Rating: {champion.rating}/10 | " if champion.rating else ""
-            response += f"**Source**: {champion.source}\n"
-            
-            # Format category to show ranking if it's in the format "Category_X #N"
-            if champion.category and '#' in champion.category and champion.category.startswith('Category_'):
-                # Extract the rank number after #
-                try:
-                    rank = champion.category.split('#')[1].strip()
-                    category_info = f"Ranking: #{rank} in category | "
-                except:
-                    category_info = f"Category: {champion.category} | "
-            else:
-                category_info = f"Category: {champion.category} | "
-            
-            response += f"{rating_str}Tier: {champion.tier} | {category_info}"
-            
-            if champion.symbols:
-                symbols_str = " ".join(champion.symbols)
-                response += f"Special Notes: {symbols_str}\n"
-            else:
-                response += "\n"
-            
-            # Provide rank-up advice based on tier/rating
-            tier_order = {
-                "Above All": "TOP TIER - Definitely prioritize rank-up!",
-                "Scorching": "HIGH TIER - Strong recommendation for rank-up",
-                "Super Hot": "HIGH TIER - Good for rank-up when possible",
-                "Hot": "MEDIUM TIER - Consider for rank-up",
-                "Mild": "LOWER TIER - Lower priority for rank-up",
-                "Information": "LOW TIER - Lowest priority for rank-up"
-            }
-            
-            advice = tier_order.get(champion.tier, "Assess based on your team composition")
-            response += f"Rank-up Priority: {advice}\n\n"
-        
-        return response
-    
-    def get_pull_recommendations(self) -> str:
-        """Generate champion pull recommendations"""
-        # Get top champions from both sources
-        vega_top = self.data_manager.get_top_champions_by_tier('vega', 5)
-        illuminati_top = self.data_manager.get_top_champions_by_tier('illuminati', 5)
-        
-        recommendations = "Here are the top champion pull recommendations based on current meta:\n\n"
-        
-        if vega_top:
-            recommendations += "**From Vega's BGs Tierlist:**\n"
-            for i, champ in enumerate(vega_top, 1):
-                recommendations += f"{i}. {champ.name} - Tier: {champ.tier}\n"
-            recommendations += "\n"
-        
-        if illuminati_top:
-            recommendations += "**From MCoC Illuminati Tier List:**\n"
-            for i, champ in enumerate(illuminati_top, 1):
-                recommendations += f"{i}. {champ.name} - Tier: {champ.tier}\n"
-            recommendations += "\n"
-        
-        if not vega_top and not illuminati_top:
-            recommendations = "No recommendations available at this time. Data may not be loaded yet."
-        
-        return recommendations
-    
-    def get_rankup_recommendations(self) -> str:
-        """Generate rank-up recommendations"""
-        # Get top champions from both sources
-        vega_top = self.data_manager.get_top_champions_by_tier('vega', 5)
-        illuminati_top = self.data_manager.get_top_champions_by_tier('illuminati', 5)
-        
-        recommendations = "Here are champions you should consider ranking up based on current meta:\n\n"
-        
-        if vega_top:
-            recommendations += "**From Vega's BGs Tierlist (Tier-based):**\n"
-            for i, champ in enumerate(vega_top, 1):
-                recommendations += f"{i}. **{champ.name}** - Tier: {champ.tier} ({champ.category})\n"
-            recommendations += "\n"
-        
-        if illuminati_top:
-            recommendations += "**From MCoC Illuminati Tier List (Rating-based):**\n"
-            for i, champ in enumerate(illuminati_top, 1):
-                rating_str = f" - Rating: {champ.rating}/10" if champ.rating else ""
-                recommendations += f"{i}. **{champ.name}** - Tier: {champ.tier}{rating_str} ({champ.category})\n"
-            recommendations += "\n"
-        
-        if not vega_top and not illuminati_top:
-            recommendations = "No rank-up recommendations available at this time. Data may not be loaded yet."
-        else:
-            recommendations += "Rank up champions in these lists for maximum meta effectiveness!"
-        
-        return recommendations
-
-    def get_champion_rankup_info(self, name: str) -> str:
-        """Get specific rankup information for a champion"""
-        champions = self.data_manager.get_champion_by_name(name)
-        
-        if not champions:
-            return f"Sorry, I couldn't find information about '{name}'. Please check the spelling and try again."
-        
-        response = f"**Rank-up Information for {name}:**\n\n"
-        
-        for champion in champions:
-            rating_str = f"Rating: {champion.rating}/10 | " if champion.rating else ""
-            response += f"**Source**: {champion.source}\n"
-            response += f"{rating_str}Tier: {champion.tier} | Category: {champion.category}\n"
-            
-            if champion.symbols:
-                symbols_str = " ".join(champion.symbols)
-                response += f"Special Notes: {symbols_str}\n"
             
             # Provide rank-up advice based on tier/rating
             tier_order = {
@@ -427,31 +295,86 @@ class CommandHandler:
         
         return response
 
+    def pick_champions_for_battlegrounds(self, count: int, champion_names: str) -> str:
+        """Pick the best N champions for battlegrounds - streamlined for quick decisions"""
+        # Split the champion names by commas
+        names = [name.strip() for name in champion_names.split(',')]
+        
+        champions = []
+        
+        # Find each champion using the same fuzzy matching as the real implementation
+        for name in names:
+            found_champs = self.data_manager.get_champion_by_name(name)
+            if found_champs:
+                # If multiple matches are found, use the first one
+                champions.append(found_champs[0])
+            # Note: We intentionally skip champions not found rather than creating defaults
+        
+        # Calculate battlegrounds-focused scores for each champion
+        champion_scores = []
+        for champion in champions:
+            # Focus on battlegrounds rating as the primary factor
+            if champion.rating is not None:
+                # Champions with battlegrounds ratings get priority
+                bg_score = champion.rating
+                
+                # Boost Dual Threat champions by 1 point as requested
+                if champion.battlegrounds_type == "Dual Threat":
+                    bg_score += 1
+                
+                # Add a small bonus based on ranking for tie-breaking
+                ranking_bonus = 0
+                if champion.category and '#' in champion.category:
+                    try:
+                        # Extract the ranking number after the '#'
+                        ranking_part = champion.category.split('#')[1]
+                        # Only take the first part if there are additional words after the number
+                        ranking_num_str = ranking_part.split()[0] 
+                        ranking_num = int(ranking_num_str)
+                        # Higher ranked champions get a small bonus (1st gets more than 10th, etc.)
+                        ranking_bonus = max(0, (50 - ranking_num) / 10)  # Scale down the bonus
+                    except (IndexError, ValueError):
+                        # If we can't parse the ranking, no bonus
+                        ranking_bonus = 0
+                
+                # Total score prioritizes battlegrounds rating first, then ranking
+                total_score = bg_score + ranking_bonus
+                champion_scores.append((champion, total_score, True))  # True = has BG rating
+            else:
+                # Champions without battlegrounds ratings get a very low base score
+                # These are placeholder champions or champions not good enough for battlegrounds
+                total_score = 0.1  # Very low score so they appear at the bottom
+                champion_scores.append((champion, total_score, False))  # False = no BG rating
+        
+        # Sort by total score descending, but prioritize champions with battlegrounds ratings
+        # Primary sort: has battlegrounds rating (True > False)
+        # Secondary sort: total score descending
+        champion_scores.sort(key=lambda x: (x[2], x[1]), reverse=True)
+        
+        # Select the top N champions
+        selected_champions = champion_scores[:count] if count > 0 else champion_scores
+        
+        # Format the results - streamlined for battlegrounds context
+        if not selected_champions:
+            return "No champions found to pick from."
+        
+        response = f"**Top {count} Battlegrounds Picks:**\n\n"
+        
+        for i, (champion, score, has_bg_rating) in enumerate(selected_champions, 1):
+            # Show champion name and battlegrounds rating/type
+            if champion.rating is not None:
+                response += f"{i}. **{champion.name}** - {champion.rating}/10 {champion.battlegrounds_type or 'Attacker'}\n"
+            else:
+                response += f"{i}. **{champion.name}** - Not recommended for BGs\n"
+        
+        return response
+
 # Create a cog for the commands
 class MCOCCommands(commands.Cog):
     def __init__(self, bot, data_manager: DataManager):
         self.bot = bot
         self.command_handler = CommandHandler(data_manager)
         self.data_manager = data_manager
-    
-    @commands.command(name='champion')
-    async def champion_info(self, ctx, *, champion_name: str):
-        """Get information about a specific champion"""
-        champions = self.data_manager.get_champion_by_name(champion_name)
-        
-        if champions:
-            # Send info for each source where the champion appears
-            for champion in champions:
-                info = self.command_handler.format_champion_info(champion)
-                await ctx.send(f"```\n{info}\n```")
-        else:
-            await ctx.send(f"Sorry, I couldn't find information about '{champion_name}'. Please check the spelling and try again.")
-    
-    @commands.command(name='pulls')
-    async def pulls_recommendations(self, ctx):
-        """Get champion pull recommendations"""
-        recommendations = self.command_handler.get_pull_recommendations()
-        await ctx.send(recommendations)
     
     @commands.command(name='rankup')
     async def rankup_recommendations(self, ctx, *, champion_name: str = None):
@@ -471,18 +394,26 @@ class MCOCCommands(commands.Cog):
             recommendations = self.command_handler.get_rankup_recommendations()
             await ctx.send(recommendations)
     
-    @commands.command(name='tierlist')
-    async def tierlist(self, ctx):
-        """Show the full tier list"""
-        await ctx.send("Full tier list functionality coming soon! For now, check the source spreadsheets.")
-    
-    @commands.command(name='refresh')
-    async def refresh_data(self, ctx):
-        """Refresh data from Google Sheets (admin only)"""
-        # For now, allow anyone to refresh, but in production you might want to restrict this
+    @commands.command(name='pick')
+    async def pick_battlegrounds_champions(self, ctx, *, args: str = None):
+        """Pick the best N champions for battlegrounds from a list of champions"""
+        if not args:
+            await ctx.send("Usage: !pick N champion1, champion2, champion3, ...")
+            return
+        
+        # Parse the arguments: first part should be the number, rest are champion names
+        parts = args.split(" ", 1)
+        if len(parts) < 2:
+            await ctx.send("Usage: !pick N champion1, champion2, champion3, ...")
+            return
+        
         try:
-            self.data_manager.refresh_data()
-            await ctx.send("Data successfully refreshed from Google Sheets!")
-        except Exception as e:
-            logging.error(f"Error refreshing data: {e}")
-            await ctx.send("Error refreshing data. Please try again later.")
+            count = int(parts[0])
+            champion_names = parts[1]
+        except ValueError:
+            await ctx.send("Usage: !pick N champion1, champion2, champion3, ... (where N is a number)")
+            return
+        
+        # Pick the champions using our new function
+        result = self.command_handler.pick_champions_for_battlegrounds(count, champion_names)
+        await ctx.send(result)

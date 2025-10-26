@@ -48,13 +48,8 @@ async def help_command(ctx):
     """Display available commands"""
     help_text = """
 **MCOC Champions Bot Commands:**
-`!champion <name>` - Get tier and information about a specific champion
-`!pulls` - Get current recommendations for champion pulls
 `!rankup` - Get general suggestions for champions to rank up
 `!rankup <name>` - Get specific rank-up advice for a champion
-`!tierlist` - Get the full tier list
-`!refresh` - Manually refresh data from public sheets
-`!commands` - Show available commands
     """
     await ctx.send(help_text)
 
@@ -63,13 +58,8 @@ async def commands_list(ctx):
     """Display available commands"""
     help_text = """
 **MCOC Champions Bot Commands:**
-`!champion <name>` - Get tier and information about a specific champion
-`!pulls` - Get current recommendations for champion pulls
 `!rankup` - Get general suggestions for champions to rank up
 `!rankup <name>` - Get specific rank-up advice for a champion
-`!tierlist` - Get the full tier list
-`!refresh` - Manually refresh data from public sheets
-`!commands` - Show available commands
     """
     await ctx.send(help_text)
 
