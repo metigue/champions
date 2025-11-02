@@ -1134,8 +1134,8 @@
     "specific_relic_needed": false,
     "early_prediction": false,
     "other_symbols": [],
-    "battlegrounds_rating": null,
-    "battlegrounds_type": null,
+    "battlegrounds_rating": 6,
+    "battlegrounds_type": "Attacker",
     "source": "combined"
   },
   "ant-man": {
@@ -1206,12 +1206,29 @@
     "battlegrounds_type": "Defender",
     "source": "combined"
   },
-  "cassie lang": {
-    "name": "Cassie Lang",
+  "m.o.d.o.k.": {
+    "name": "M.O.D.O.K.",
     "class": "Science",
     "rank": 31,
     "tier": "Hot",
     "ranking_display": "Science #31",
+    "ranking_depends_on_awakening": false,
+    "ranking_depends_on_signature": false,
+    "top_candidate_for_ascension": false,
+    "difficult_as_7star": false,
+    "specific_relic_needed": false,
+    "early_prediction": false,
+    "other_symbols": [],
+    "battlegrounds_rating": 8,
+    "battlegrounds_type": "Defender",
+    "source": "combined"
+  },
+  "cassie lang": {
+    "name": "Cassie Lang",
+    "class": "Science",
+    "rank": 32,
+    "tier": "Hot",
+    "ranking_display": "Science #32",
     "ranking_depends_on_awakening": false,
     "ranking_depends_on_signature": false,
     "top_candidate_for_ascension": false,
@@ -1226,9 +1243,9 @@
   "rhino": {
     "name": "Rhino",
     "class": "Science",
-    "rank": 32,
+    "rank": 33,
     "tier": "Hot",
-    "ranking_display": "Science #32",
+    "ranking_display": "Science #33",
     "ranking_depends_on_awakening": false,
     "ranking_depends_on_signature": false,
     "top_candidate_for_ascension": false,
@@ -1243,9 +1260,9 @@
   "mister negative": {
     "name": "Mister Negative",
     "class": "Science",
-    "rank": 33,
+    "rank": 34,
     "tier": "Hot",
-    "ranking_display": "Science #33",
+    "ranking_display": "Science #34",
     "ranking_depends_on_awakening": true,
     "ranking_depends_on_signature": false,
     "top_candidate_for_ascension": false,
@@ -1260,9 +1277,9 @@
   "spider-man (classic)": {
     "name": "Spider-Man (Classic)",
     "class": "Science",
-    "rank": 34,
+    "rank": 35,
     "tier": "Hot",
-    "ranking_display": "Science #34",
+    "ranking_display": "Science #35",
     "ranking_depends_on_awakening": false,
     "ranking_depends_on_signature": false,
     "top_candidate_for_ascension": false,
@@ -1277,9 +1294,9 @@
   "morbius": {
     "name": "Morbius",
     "class": "Science",
-    "rank": 35,
+    "rank": 36,
     "tier": "Hot",
-    "ranking_display": "Science #35",
+    "ranking_display": "Science #36",
     "ranking_depends_on_awakening": false,
     "ranking_depends_on_signature": false,
     "top_candidate_for_ascension": false,
@@ -1293,23 +1310,6 @@
   },
   "spider-gwen": {
     "name": "Spider-Gwen",
-    "class": "Science",
-    "rank": 36,
-    "tier": "Hot",
-    "ranking_display": "Science #36",
-    "ranking_depends_on_awakening": false,
-    "ranking_depends_on_signature": false,
-    "top_candidate_for_ascension": false,
-    "difficult_as_7star": false,
-    "specific_relic_needed": false,
-    "early_prediction": false,
-    "other_symbols": [],
-    "battlegrounds_rating": 10,
-    "battlegrounds_type": "Defender",
-    "source": "combined"
-  },
-  "hulk (immortal)": {
-    "name": "Hulk (Immortal)",
     "class": "Science",
     "rank": 37,
     "tier": "Hot",
@@ -1325,12 +1325,29 @@
     "battlegrounds_type": null,
     "source": "combined"
   },
+  "hulk (immortal)": {
+    "name": "Hulk (Immortal)",
+    "class": "Science",
+    "rank": 38,
+    "tier": "Hot",
+    "ranking_display": "Science #38",
+    "ranking_depends_on_awakening": false,
+    "ranking_depends_on_signature": false,
+    "top_candidate_for_ascension": false,
+    "difficult_as_7star": false,
+    "specific_relic_needed": false,
+    "early_prediction": false,
+    "other_symbols": [],
+    "battlegrounds_rating": null,
+    "battlegrounds_type": null,
+    "source": "combined"
+  },
   "falcon (joaquin torres)": {
     "name": "Falcon (Joaquin Torres)",
     "class": "Science",
-    "rank": 38,
+    "rank": 39,
     "tier": "Mild",
-    "ranking_display": "Science #38",
+    "ranking_display": "Science #39",
     "ranking_depends_on_awakening": false,
     "ranking_depends_on_signature": false,
     "top_candidate_for_ascension": false,
@@ -1345,9 +1362,9 @@
   "sentry": {
     "name": "Sentry",
     "class": "Science",
-    "rank": 39,
+    "rank": 40,
     "tier": "Mild",
-    "ranking_display": "Science #39",
+    "ranking_display": "Science #40",
     "ranking_depends_on_awakening": false,
     "ranking_depends_on_signature": false,
     "top_candidate_for_ascension": false,
@@ -1362,9 +1379,9 @@
   "red hulk": {
     "name": "Red Hulk",
     "class": "Science",
-    "rank": 40,
+    "rank": 41,
     "tier": "Mild",
-    "ranking_display": "Science #40",
+    "ranking_display": "Science #41",
     "ranking_depends_on_awakening": false,
     "ranking_depends_on_signature": false,
     "top_candidate_for_ascension": false,
@@ -1563,8 +1580,8 @@
     "battlegrounds_type": "Attacker",
     "source": "combined"
   },
-  "mr": {
-    "name": "Mr",
+  "mr. knight": {
+    "name": "Mr. Knight",
     "class": "Skill",
     "rank": 12,
     "tier": "Super Hot",
@@ -1576,8 +1593,8 @@
     "specific_relic_needed": false,
     "early_prediction": false,
     "other_symbols": [],
-    "battlegrounds_rating": 6,
-    "battlegrounds_type": "Attacker",
+    "battlegrounds_rating": 8,
+    "battlegrounds_type": "Dual Threat",
     "source": "combined"
   },
   "hit-monkey": {
@@ -1593,8 +1610,8 @@
     "specific_relic_needed": false,
     "early_prediction": false,
     "other_symbols": [],
-    "battlegrounds_rating": 8,
-    "battlegrounds_type": "Defender",
+    "battlegrounds_rating": null,
+    "battlegrounds_type": null,
     "source": "combined"
   },
   "silver sable": {
@@ -2018,8 +2035,8 @@
     "specific_relic_needed": false,
     "early_prediction": false,
     "other_symbols": [],
-    "battlegrounds_rating": 8,
-    "battlegrounds_type": "Dual Threat",
+    "battlegrounds_rating": 9,
+    "battlegrounds_type": "Attacker",
     "source": "combined"
   },
   "dazzler": {
@@ -3259,8 +3276,8 @@
     "specific_relic_needed": false,
     "early_prediction": false,
     "other_symbols": [],
-    "battlegrounds_rating": 9,
-    "battlegrounds_type": "Attacker",
+    "battlegrounds_rating": 10,
+    "battlegrounds_type": "Defender",
     "source": "combined"
   },
   "thanos (deathless)": {

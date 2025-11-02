@@ -161,74 +161,132 @@ class DataManager:
         logging.info("Loading champions from JSON database...")
         return self.champions_data
     
+    def _normalize_name(self, name: str) -> str:
+        """Normalize champion name for comparison"""
+        return re.sub(r'[^a-z0-9]', '', name.lower())
+
+    def _levenshtein_distance(self, s1, s2):
+        m, n = len(s1), len(s2)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(m + 1):
+            dp[i][0] = i
+        for j in range(n + 1):
+            dp[0][j] = j
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                cost = 0 if s1[i - 1] == s2[j - 1] else 1
+                dp[i][j] = min(dp[i - 1][j] + 1,        # Deletion
+                               dp[i][j - 1] + 1,        # Insertion
+                               dp[i - 1][j - 1] + cost) # Substitution
+        return dp[m][n]
+
+    def _jaro_winkler_similarity(self, s1, s2, p=0.1):
+        if not s1 and not s2:
+            return 1.0
+        if not s1 or not s2:
+            return 0.0
+
+        len1 = len(s1)
+        len2 = len(s2)
+
+        match_distance = max(len1, len2) // 2 - 1
+        if match_distance < 0:
+            match_distance = 0
+
+        s1_matches = [False] * len1
+        s2_matches = [False] * len2
+
+        matches = 0
+        transpositions = 0
+        
+        for i in range(len1):
+            start = max(0, i - match_distance)
+            end = min(len2, i + match_distance + 1)
+            for j in range(start, end):
+                if not s2_matches[j] and s1[i] == s2[j]:
+                    s1_matches[i] = True
+                    s2_matches[j] = True
+                    matches += 1
+                    break
+
+        if matches == 0:
+            return 0.0
+
+        k = 0
+        for i in range(len1):
+            if s1_matches[i]:
+                while not s2_matches[k]:
+                    k += 1
+                if s1[i] != s2[k]:
+                    transpositions += 1
+                k += 1
+        
+        transpositions //= 2
+
+        jaro_similarity = (matches / len1 + matches / len2 + (matches - transpositions) / matches) / 3.0
+
+        prefix = 0
+        for i in range(min(len1, len2, 4)):
+            if s1[i] == s2[i]:
+                prefix += 1
+            else:
+                break
+        
+        return jaro_similarity + (prefix * p * (1 - jaro_similarity))
+
+    def _ngram_similarity(self, s1, s2, n=2):
+        def get_ngrams(s, n):
+            return set(s[i:i+n] for i in range(len(s)-n+1))
+
+        ngrams1 = get_ngrams(s1, n)
+        ngrams2 = get_ngrams(s2, n)
+
+        if not ngrams1 and not ngrams2:
+            return 1.0
+        if not ngrams1 or not ngrams2:
+            return 0.0
+
+        return len(ngrams1.intersection(ngrams2)) / len(ngrams1.union(ngrams2))
+
     def get_champion_by_name(self, name: str) -> List[Champion]:
         """Get champion information by name (case-insensitive) - returns only the closest match"""
-        name_lower = name.lower().strip()
-        
+        name_lower = self._normalize_name(name)
+
+        # Special case for "Doom"
+        if name_lower == "doom":
+            return [self.champion_lookup["doctor doom"]]
+
         # Direct lookup first
         if name_lower in self.champion_lookup:
             return [self.champion_lookup[name_lower]]
-        
+
         # Try fuzzy matching with close matches using multiple strategies
-        all_names = list(self.champion_lookup.keys())
-        
-        # First try standard close matches
-        close_matches = get_close_matches(name_lower, all_names, n=3, cutoff=0.3)
-        
-        # Special handling for cases where search term is at the beginning of a champion name
-        # This handles cases like "nico" matching "nico minoru" even if similarity isn't highest
-        prefix_matches = []
-        for key in all_names:
-            champion = self.champion_lookup[key]
-            # Check if the search term is at the beginning of either the key or the champion name
-            if (key.startswith(name_lower) or 
-                champion.name.lower().startswith(name_lower)):
-                prefix_matches.append((key, champion))
-        
-        # If we have prefix matches, prioritize those over standard close matches
-        # But prioritize champions with higher ratings (tiered champions over placeholders)
-        if prefix_matches:
-            # Sort prefix matches by rating (descending) to prioritize tiered champions
-            prefix_matches.sort(key=lambda x: (x[1].rating or 0), reverse=True)
-            return [prefix_matches[0][1]]
-        
-        # If we have close matches, pick the best one based on similarity ratio
-        if close_matches:
-            best_match = None
-            best_ratio = 0
-            
-            for match in close_matches:
-                champion = self.champion_lookup[match]
-                # Calculate similarity between search term and both the lookup key and actual name
-                ratio1 = SequenceMatcher(None, name_lower, match).ratio()
-                ratio2 = SequenceMatcher(None, name_lower, champion.name.lower()).ratio()
-                # Use the higher of the two ratios
-                max_ratio = max(ratio1, ratio2)
-                
-                if max_ratio > best_ratio:
-                    best_ratio = max_ratio
-                    best_match = champion
-            
-            if best_match:
-                return [best_match]
-        
-        # If no close matches found via fuzzy search, calculate similarity for all entries
         best_match = None
-        best_ratio = 0
+        best_score = -1
+
         for key, champion in self.champion_lookup.items():
-            # Calculate similarity between search term and both the lookup key and actual name
-            ratio1 = SequenceMatcher(None, name_lower, key).ratio()
-            ratio2 = SequenceMatcher(None, name_lower, champion.name.lower()).ratio()
-            # Use the higher of the two ratios
-            max_ratio = max(ratio1, ratio2)
-            
-            if max_ratio > best_ratio:
-                best_ratio = max_ratio
+            normalized_key = self._normalize_name(key)
+
+            # Calculate similarity scores
+            lev_distance = self._levenshtein_distance(name_lower, normalized_key)
+            lev_similarity = 1 - (lev_distance / max(len(name_lower), len(normalized_key)))
+            jaro_winkler_score = self._jaro_winkler_similarity(name_lower, normalized_key)
+            ngram_score = self._ngram_similarity(name_lower, normalized_key)
+
+            # Weighted average
+            score = (0.4 * jaro_winkler_score) + (0.4 * lev_similarity) + (0.2 * ngram_score)
+
+            # Boost score for prefix matches
+            if normalized_key.startswith(name_lower):
+                score += 0.1
+
+            if score > best_score:
+                best_score = score
                 best_match = champion
-        
-        if best_match and best_ratio > 0.4:  # Only return if similarity is above threshold
+
+        if best_match and best_score > 0.6:
             return [best_match]
-        
+
         return []
     
     def get_top_champions_by_tier(self, source: str = 'vega', limit: int = 10) -> List[Champion]:

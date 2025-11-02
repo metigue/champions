@@ -98,35 +98,6 @@ def build_champion_database():
     
     # Parse Ranking sheet to get class rankings and tiers
     champions_data = {}
-    # Dictionary of known champions and their special properties
-    # This compensates for emoji symbols that may be lost in CSV export
-    known_champion_symbols = {
-        "mr. negative": {
-            "ranking_depends_on_awakening": True,  # 🌟 Awakening needed for this ranking
-            "difficult_as_7star": True,  # 🌹 Not available as a 7 star (or very rare)
-            "early_prediction": False,  # Not marked with 🎲
-            "specific_relic_needed": False,  # Not marked with 💾
-            "ranking_depends_on_signature": False,  # Not marked with 🚀
-            "top_candidate_for_ascension": False  # Not marked with 💎
-        },
-        "mister negative": {
-            "ranking_depends_on_awakening": True,  # 🌟 Awakening needed for this ranking
-            "difficult_as_7star": True,  # 🌹 Not available as a 7 star (or very rare)
-            "early_prediction": False,
-            "specific_relic_needed": False,
-            "ranking_depends_on_signature": False,
-            "top_candidate_for_ascension": False
-        },
-        "spider-man (supreme)": {
-            "ranking_depends_on_awakening": False,
-            "difficult_as_7star": False,
-            "early_prediction": False,
-            "specific_relic_needed": True,  # 💾 Correct relic is important
-            "ranking_depends_on_signature": True,  # 🚀 High or Max Sig needed for this ranking
-            "top_candidate_for_ascension": False
-        }
-        # Add more champions as needed
-    }
     
     # Find all class names in column A of ranking sheet
     class_starts = []
@@ -207,7 +178,7 @@ def build_champion_database():
                         char = cell_value[i]
                         # Check if character is a-z, A-Z, 0-9, hyphen, space, or parentheses
                         char_code = ord(char)
-                        if (65 <= char_code <= 90) or (97 <= char_code <= 122) or (48 <= char_code <= 57) or char in ' -.()':
+                        if (65 <= char_code <= 90) or (97 <= char_code <= 122) or (48 <= char_code <= 57) or char in ' -()':
                             name_part += char
                             i += 1
                         else:
@@ -278,29 +249,25 @@ def build_champion_database():
                         
 
                         
-                        # Override with known symbols if available
-                        name_key = clean_name.lower()
-                        symbol_overrides = known_champion_symbols.get(name_key, {})
-                        
                         champions_data[clean_name.lower()] = {
                             "name": clean_name,
                             "class": class_name,
                             "rank": rank_counter,
                             "tier": tier,
                             "ranking_display": f"{class_name} #{rank_counter}",
-                            "ranking_depends_on_awakening": symbol_overrides.get('ranking_depends_on_awakening', '🌟' in symbols),
-                            "ranking_depends_on_signature": symbol_overrides.get('ranking_depends_on_signature', '🚀' in symbols),
-                            "top_candidate_for_ascension": symbol_overrides.get('top_candidate_for_ascension', '💎' in symbols),
-                            "difficult_as_7star": symbol_overrides.get('difficult_as_7star', '🌹' in symbols),
-                            "specific_relic_needed": symbol_overrides.get('specific_relic_needed', '💾' in symbols),
-                            "early_prediction": symbol_overrides.get('early_prediction', '🎲' in symbols),
+                            "ranking_depends_on_awakening": '🌟' in symbols,
+                            "ranking_depends_on_signature": '🚀' in symbols,
+                            "top_candidate_for_ascension": '💎' in symbols,
+                            "difficult_as_7star": '🌹' in symbols,
+                            "specific_relic_needed": '💾' in symbols,
+                            "early_prediction": '🎲' in symbols,
                             "other_symbols": [s for s in symbols if s not in ['🌟', '🚀', '💎', '🌹', '💾', '🎲']],
                             "battlegrounds_rating": bg_data.get("rating"),
                             "battlegrounds_type": bg_data.get("type"),
                             "source": "combined"
                         }
                         
-                        # Increment rank for next champion in this tier/class
+                        # Increment rank for next champion in this class
                         rank_counter += 1
                         
                 except (IndexError, TypeError):
@@ -341,40 +308,6 @@ def build_champion_database():
             if bg_name.lower() in existing_name.lower() or existing_name.lower() in bg_name.lower():
                 # Boost similarity if one name contains the other
                 ratio = max(ratio, 0.85)
-            
-            # Special handling for known champion name variations to improve matching accuracy
-            # Handle specific cases where we know the correct mappings
-            known_variations = {
-                'mr. negative': 'mister negative',
-                'mr negative': 'mister negative',
-                'mister negative': 'mr. negative',
-                'spidey supreme': 'spider-man (supreme)',
-                'spider-man (supreme)': 'spidey supreme',
-                'sigil witch': 'scarlet witch (sigil)',
-                'scarlet witch (sigil)': 'sigil witch'
-            }
-            
-            bg_normalized = bg_name.lower().strip()
-            existing_normalized = existing_name.lower().strip()
-            
-            # Check for exact known variations
-            if bg_normalized in known_variations and known_variations[bg_normalized] == existing_normalized:
-                # Very high match for known variations
-                ratio = 0.95
-            elif existing_normalized in known_variations and known_variations[existing_normalized] == bg_normalized:
-                # Very high match for known variations (reverse)
-                ratio = 0.95
-            
-            # Special handling for names with common prefixes like "Mr." vs "Dr." that might interfere
-            # Process the names to remove common prefixes for additional similarity checking
-            bg_no_prefix = bg_name.lower().replace('mr.', '').replace('dr.', '').replace('captain ', '').strip()
-            existing_no_prefix = existing_name.lower().replace('mr.', '').replace('dr.', '').replace('captain ', '').strip()
-            
-            # Calculate ratio without prefixes to avoid prefix-based mismatches
-            prefix_removed_ratio = SequenceMatcher(None, bg_no_prefix, existing_no_prefix).ratio()
-            
-            # Use the higher of the two ratios
-            ratio = max(ratio, prefix_removed_ratio)
             
             # Look for shared special terms that would indicate a strong match
             bg_lower = bg_name.lower()
@@ -462,40 +395,9 @@ def build_champion_database():
             "source": "vega"  # From battlegrounds sheet
         }
 
-    # Filter out non-champion entries that were accidentally included 
-    # (like contributor names, social media links, etc. from the Information column)
-    non_champion_keywords = [
-        'mcoce', 'illuminati', 'vega', 'cantona', 'grass', 'encyclopedia', 'encyclopdia', 
-        'nagase', 'tjarvis', 'william', 'creator codes', 'socials', 'youtube', 'twitter', 
-        'bluesky', 'instagram', 'discord', 'more helpful videos', 'how to fight', 'series',
-        'guide', 'video', 'channel', 'page', 'link', 'url', 'website', 'stream', 'twitch'
-    ]
-    
-    # Create a new dictionary with only legitimate champions
-    filtered_champions_data = {}
-    for name_key, champion_data in champions_data.items():
-        name_lower = champion_data['name'].lower()
-        
-        # Check if the name contains any non-champion keywords
-        is_non_champion = False
-        for keyword in non_champion_keywords:
-            if keyword in name_lower:
-                is_non_champion = True
-                break
-        
-        # Also check if the tier is 'Information' but the name suggests it's not a real champion
-        if not is_non_champion and champion_data['tier'] == 'Information':
-            # If it's from the information tier but doesn't have obvious non-champion keywords,
-            # we might still want to check if it's a real champion based on other factors
-            # For now, we'll keep it unless we're sure it's a non-champion
-            pass
-        
-        if not is_non_champion:
-            filtered_champions_data[name_key] = champion_data
-
     # Save to JSON file
     with open('champions_database.json', 'w', encoding='utf-8') as f:
-        json.dump(filtered_champions_data, f, indent=2, ensure_ascii=False)
+        json.dump(champions_data, f, indent=2, ensure_ascii=False)
     
     print(f"Database built successfully! Contains {len(champions_data)} champions.")
     

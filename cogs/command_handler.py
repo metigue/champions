@@ -12,27 +12,7 @@ class CommandHandler:
     def __init__(self, data_manager: DataManager):
         self.data_manager = data_manager
     
-    def fuzzy_champion_search(self, name: str) -> Champion:
-        """Find champion using fuzzy matching"""
-        name = name.lower().strip()
-        
-        # Try exact match first
-        champions = self.data_manager.get_champion_by_name(name)
-        if champions:
-            return champions[0]  # Return first match
-        
-        # Try partial match
-        all_champions = []
-        for source_champions in self.data_manager.champions_data.values():
-            all_champions.extend(source_champions)
-        
-        # Find best match based on substring
-        for champion in all_champions:
-            if name in champion.name.lower():
-                return champion
-        
-        # If no match found, return None
-        return None
+
     
     def format_champion_info(self, champion: Champion) -> str:
         """Format champion information for Discord display"""
