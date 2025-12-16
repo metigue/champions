@@ -55,7 +55,9 @@ class DataManager:
                     rating=champion_data['battlegrounds_rating'],
                     symbols=symbols,
                     source=source,
-                    battlegrounds_type=champion_data.get('battlegrounds_type')
+                    battlegrounds_type=champion_data.get('battlegrounds_type'),
+                    rank=champion_data.get('rank'),
+                    class_=champion_data.get('class')
                 )
                 
                 champions.append(champion)

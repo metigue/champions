@@ -12,7 +12,9 @@ class Champion:
     special_notes: str = ""
     source: str = ""
     battlegrounds_type: Optional[str] = None  # Added battlegrounds type (e.g., Attacker, Defender, Dual Threat)
-    
+    rank: Optional[int] = None  # Added rank field
+    class_: Optional[str] = None  # Added class field
+
     def __post_init__(self):
         if self.symbols is None:
             self.symbols = []

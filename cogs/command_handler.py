@@ -86,7 +86,10 @@ class CommandHandler:
             # For single champion info, don't show numbering like in multi-rankups
             response += f"**{champion.name}**\n"
             response += f"   - Battlegrounds Rating: {rating_str}{type_str}\n"
-            response += f"   - Class Ranking: {champion.category}\n"
+            if champion.rank is not None:
+                response += f"   - Class Ranking: {champion.class_} #{champion.rank}\n"
+            else:
+                response += f"   - Class Ranking: {champion.category}\n"
             response += f"   - Tier: {champion.tier}\n"
             
             # Translate emoji symbols to their meanings (as specified by user)
@@ -193,15 +196,12 @@ class CommandHandler:
                 
                 # Calculate class ranking score (50 - ranking number, with minimum of 5)
                 ranking_score = 5  # Default minimum for champions without ranking
-                if champion.category and '#' in champion.category:
+                if champion.rank is not None:
                     try:
-                        # Extract the ranking number after the '#'
-                        ranking_part = champion.category.split('#')[1]
-                        # Only take the first part if there are additional words after the number
-                        ranking_num_str = ranking_part.split()[0] 
-                        ranking_num = int(ranking_num_str)
+                        # Use the rank field directly
+                        ranking_num = int(champion.rank)
                         ranking_score = max(5, 50 - ranking_num)
-                    except (IndexError, ValueError):
+                    except (ValueError, TypeError):
                         # If we can't parse the ranking, keep the default score of 5
                         ranking_score = 5
                 
@@ -228,7 +228,10 @@ class CommandHandler:
                 type_str = f" ({champion.battlegrounds_type})" if champion.battlegrounds_type else ""
                 response += f"{i}. **{champion.name}**\n"
                 response += f"   - Battlegrounds Rating: {rating_str}{type_str}\n"
-                response += f"   - Class Ranking: {champion.category}\n"
+                if champion.rank is not None:
+                    response += f"   - Class Ranking: {champion.class_} #{champion.rank}\n"
+                else:
+                    response += f"   - Class Ranking: {champion.category}\n"
                 response += f"   - Tier: {champion.tier}\n\n"
         
         # Determine recommendation based on score differences
@@ -299,16 +302,13 @@ class CommandHandler:
                 
                 # Add a small bonus based on ranking for tie-breaking
                 ranking_bonus = 0
-                if champion.category and '#' in champion.category:
+                if champion.rank is not None:
                     try:
-                        # Extract the ranking number after the '#'
-                        ranking_part = champion.category.split('#')[1]
-                        # Only take the first part if there are additional words after the number
-                        ranking_num_str = ranking_part.split()[0] 
-                        ranking_num = int(ranking_num_str)
+                        # Use the rank field directly
+                        ranking_num = int(champion.rank)
                         # Higher ranked champions get a small bonus (1st gets more than 10th, etc.)
                         ranking_bonus = max(0, (50 - ranking_num) / 10)  # Scale down the bonus
-                    except (IndexError, ValueError):
+                    except (ValueError, TypeError):
                         # If we can't parse the ranking, no bonus
                         ranking_bonus = 0
                 

@@ -60,26 +60,53 @@ def build_champion_database():
                     if not cell_value:
                         continue
 
-                    parts = cell_value.split('-', 1)
-                    if len(parts) >= 2:
-                        name_part = parts[0].strip()
-                        rating_part_str = parts[1].strip()
+                    # Handle champion names that may contain hyphens by splitting from the right
+                    # The rating is always a number at the end after a hyphen
+                    name_part = None
+                    rating_part_str = None
+                    rating = None
+                    symbols = []
 
-                        rating = None
-                        if rating_part_str.startswith('1') and len(rating_part_str) > 1 and rating_part_str[1].isdigit():
-                            rating = 10
-                        elif rating_part_str and rating_part_str[0].isdigit():
-                            rating = int(rating_part_str[0])
+                    # Look for patterns like "Name - Rating" or "Name -Rating" where rating is a number
+                    # Handle both "space-hyphen-space-rating" and "space-hyphen-rating" patterns
+                    last_dash_index = -1
+                    offset = 0
 
-                        emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
-                        symbols = emoji_pattern.findall(cell_value)
+                    # First try to find ' - ' pattern (space-hyphen-space)
+                    if ' - ' in cell_value:
+                        last_dash_index = cell_value.rfind(' - ')
+                        offset = 3  # Length of ' - '
+                    # Then try ' -' pattern (space-hyphen)
+                    elif ' -' in cell_value:
+                        last_dash_index = cell_value.rfind(' -')
+                        offset = 2  # Length of ' -'
 
-                        if name_part:
-                            battlegrounds_data[name_part.lower()] = {
-                                "rating": rating,
-                                "type": current_role,
-                                "symbols": symbols
-                            }
+                    if last_dash_index >= 0:
+                        name_part = cell_value[:last_dash_index].strip()
+                        rating_part_str = cell_value[last_dash_index + offset:].strip()
+
+                        if rating_part_str:
+                            # Extract numeric rating, ignoring any trailing emojis
+                            # Find the first digit and try to extract the rating number
+                            for char in rating_part_str:
+                                if char.isdigit():
+                                    if char == '1' and len(rating_part_str) > rating_part_str.find(char) + 1 and rating_part_str[rating_part_str.find(char)+1:rating_part_str.find(char)+2].isdigit():
+                                        # Handle "10" case - if '1' is followed by another digit
+                                        rating = 10
+                                    else:
+                                        rating = int(char)
+                                    break
+
+                    # Extract emoji symbols
+                    emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
+                    symbols = emoji_pattern.findall(cell_value)
+
+                    if name_part:
+                        battlegrounds_data[name_part.lower()] = {
+                            "rating": rating,
+                            "type": current_role,
+                            "symbols": symbols
+                        }
                     else: # Handle cases where there's a name but no rating (e.g. just a champion name)
                         # Extract symbols from the original cell value
                         emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
@@ -102,26 +129,53 @@ def build_champion_database():
                     if not cell_value:
                         continue
 
-                    parts = cell_value.split('-', 1)
-                    if len(parts) >= 2:
-                        name_part = parts[0].strip()
-                        rating_part_str = parts[1].strip()
+                    # Handle champion names that may contain hyphens by splitting from the right
+                    # The rating is always a number at the end after a hyphen
+                    name_part = None
+                    rating_part_str = None
+                    rating = None
+                    symbols = []
 
-                        rating = None
-                        if rating_part_str.startswith('1') and len(rating_part_str) > 1 and rating_part_str[1].isdigit():
-                            rating = 10
-                        elif rating_part_str and rating_part_str[0].isdigit():
-                            rating = int(rating_part_str[0])
+                    # Look for patterns like "Name - Rating" or "Name -Rating" where rating is a number
+                    # Handle both "space-hyphen-space-rating" and "space-hyphen-rating" patterns
+                    last_dash_index = -1
+                    offset = 0
 
-                        emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
-                        symbols = emoji_pattern.findall(cell_value)
+                    # First try to find ' - ' pattern (space-hyphen-space)
+                    if ' - ' in cell_value:
+                        last_dash_index = cell_value.rfind(' - ')
+                        offset = 3  # Length of ' - '
+                    # Then try ' -' pattern (space-hyphen)
+                    elif ' -' in cell_value:
+                        last_dash_index = cell_value.rfind(' -')
+                        offset = 2  # Length of ' -'
 
-                        if name_part:
-                            battlegrounds_data[name_part.lower()] = {
-                                "rating": rating,
-                                "type": current_role,
-                                "symbols": symbols
-                            }
+                    if last_dash_index >= 0:
+                        name_part = cell_value[:last_dash_index].strip()
+                        rating_part_str = cell_value[last_dash_index + offset:].strip()
+
+                        if rating_part_str:
+                            # Extract numeric rating, ignoring any trailing emojis
+                            # Find the first digit and try to extract the rating number
+                            for char in rating_part_str:
+                                if char.isdigit():
+                                    if char == '1' and len(rating_part_str) > rating_part_str.find(char) + 1 and rating_part_str[rating_part_str.find(char)+1:rating_part_str.find(char)+2].isdigit():
+                                        # Handle "10" case - if '1' is followed by another digit
+                                        rating = 10
+                                    else:
+                                        rating = int(char)
+                                    break
+
+                    # Extract emoji symbols
+                    emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
+                    symbols = emoji_pattern.findall(cell_value)
+
+                    if name_part:
+                        battlegrounds_data[name_part.lower()] = {
+                            "rating": rating,
+                            "type": current_role,
+                            "symbols": symbols
+                        }
                     else: # Handle cases where there's a name but no rating (e.g. just a champion name)
                         # Extract symbols from the original cell value
                         emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
@@ -165,64 +219,82 @@ def build_champion_database():
         }
         # Add more champions as needed
     }
-    
+
     # Assuming header rows are 0-7, and tier names are in row 6
     tier_names = [tier.strip() for tier in champion_tier_list_csv[6][1:] if tier.strip()]
 
     current_category = None
-    for row_idx in range(8, len(champion_tier_list_csv)):
+
+    # Process the champion tier list CSV to find class sections and assign ranks
+    row_idx = 8
+    while row_idx < len(champion_tier_list_csv):
         row = champion_tier_list_csv[row_idx]
         if not row:
+            row_idx += 1
             continue
 
         first_col_cell = row[0].strip()
         if first_col_cell and first_col_cell.lower() in ['mystic', 'science', 'skill', 'mutant', 'tech', 'cosmic']:
             current_category = first_col_cell
-        elif not first_col_cell:
-            # If first column is empty, continue using the current category if it's set
-            # This handles rows like row 325 that contain champions but don't repeat the class name
-            if not current_category:
-                # Skip if there's no category established yet
-                continue
+            # Process this class section
+            class_start_row = row_idx
+            row_idx += 1  # Move to the next row to start processing class champions
+
+            # For each class, count champions column by column to assign ranks
+            max_cols = max(len(row) for row in champion_tier_list_csv[class_start_row:class_start_row+100] if row)
+            max_cols = min(max_cols, len(tier_names) + 1)  # Don't exceed expected columns
+
+            # Calculate rankings: count all champions in each column sequentially
+            current_rank = 1  # Start assigning rank numbers from 1
+
+            # Process each column in the class section
+            for col_idx in range(1, max_cols):  # Skip first column as it contains class name
+                # Process this column from the start until we find an empty cell
+                col_row_offset = 0
+                col_has_content = True
+
+                while col_has_content:
+                    actual_row_idx = class_start_row + col_row_offset
+                    if actual_row_idx >= len(champion_tier_list_csv):
+                        break
+
+                    current_row = champion_tier_list_csv[actual_row_idx]
+                    if len(current_row) > col_idx and current_row[col_idx] and current_row[col_idx].strip():
+                        cell_value = current_row[col_idx].strip()
+
+                        emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
+                        symbols = emoji_pattern.findall(cell_value)
+                        clean_name = emoji_pattern.sub('', cell_value).strip()
+
+                        if clean_name:
+                            name_key = clean_name.lower()
+                            symbol_overrides = known_champion_symbols.get(name_key, {})
+
+                            champions_data[name_key] = {
+                                "name": clean_name,
+                                "class": current_category,
+                                "rank": current_rank,  # This is the ranking number
+                                "tier": tier_names[col_idx - 1] if col_idx - 1 < len(tier_names) else "Information",
+                                "ranking_display": f"{current_category} ({tier_names[col_idx - 1] if col_idx - 1 < len(tier_names) else 'Information'})",
+                                "ranking_depends_on_awakening": symbol_overrides.get('ranking_depends_on_awakening', '🌟' in symbols),
+                                "ranking_depends_on_signature": symbol_overrides.get('ranking_depends_on_signature', '🚀' in symbols),
+                                "top_candidate_for_ascension": symbol_overrides.get('top_candidate_for_ascension', '💎' in symbols),
+                                "difficult_as_7star": symbol_overrides.get('difficult_as_7star', '🌹' in symbols),
+                                "specific_relic_needed": symbol_overrides.get('specific_relic_needed', '💾' in symbols),
+                                "early_prediction": symbol_overrides.get('early_prediction', '🎲' in symbols),
+                                "other_symbols": [s for s in symbols if s not in ['🌟', '🚀', '💎', '🌹', '💾', '🎲']],
+                                "battlegrounds_rating": None, # Will be filled by matching
+                                "battlegrounds_type": None, # Will be filled by matching
+                                "source": "champion_tier_list"
+                            }
+
+                        current_rank += 1  # Move to next rank number
+                        col_row_offset += 1
+                    else:
+                        col_has_content = False  # This column is done for this class section
+
         else:
-            # If first column is not empty but not a class, it might be different data
-            continue
-
-        for col_idx in range(1, len(row)):
-            cell_value = row[col_idx].strip()
-            if not cell_value:
-                continue
-
-            if col_idx - 1 < len(tier_names):
-                tier = tier_names[col_idx - 1]
-            else:
-                tier = "Information"
-
-            emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
-            symbols = emoji_pattern.findall(cell_value)
-            clean_name = emoji_pattern.sub('', cell_value).strip()
-
-            if clean_name:
-                name_key = clean_name.lower()
-                symbol_overrides = known_champion_symbols.get(name_key, {})
-
-                champions_data[name_key] = {
-                    "name": clean_name,
-                    "class": current_category,
-                    "rank": None, # Rank is not explicitly given in this format, determined by order of parsing
-                    "tier": tier,
-                    "ranking_display": f"{current_category} ({tier})",
-                    "ranking_depends_on_awakening": symbol_overrides.get('ranking_depends_on_awakening', '🌟' in symbols),
-                    "ranking_depends_on_signature": symbol_overrides.get('ranking_depends_on_signature', '🚀' in symbols),
-                    "top_candidate_for_ascension": symbol_overrides.get('top_candidate_for_ascension', '💎' in symbols),
-                    "difficult_as_7star": symbol_overrides.get('difficult_as_7star', '🌹' in symbols),
-                    "specific_relic_needed": symbol_overrides.get('specific_relic_needed', '💾' in symbols),
-                    "early_prediction": symbol_overrides.get('early_prediction', '🎲' in symbols),
-                    "other_symbols": [s for s in symbols if s not in ['🌟', '🚀', '💎', '🌹', '💾', '🎲']],
-                    "battlegrounds_rating": None, # Will be filled by matching
-                    "battlegrounds_type": None, # Will be filled by matching
-                    "source": "champion_tier_list"
-                }
+            row_idx += 1  # Continue looking for class headers
 
     # Now match battlegrounds data to champions in the main sheet
     # Track which main sheet champions have already been matched to prevent double-matching
