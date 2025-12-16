@@ -223,83 +223,89 @@ def build_champion_database():
     # Assuming header rows are 0-7, and tier names are in row 6
     tier_names = [tier.strip() for tier in champion_tier_list_csv[6][1:] if tier.strip()]
 
-    current_category = None
+    # Process the champion tier list CSV and calculate actual rankings based on column position
+    champions_data = {}
 
-    # Process the champion tier list CSV to find class sections and assign ranks
-    row_idx = 8
-    while row_idx < len(champion_tier_list_csv):
-        row = champion_tier_list_csv[row_idx]
-        if not row:
-            row_idx += 1
-            continue
+    # First, identify where each class starts
+    class_start_rows = {}
+    for row_idx, row in enumerate(champion_tier_list_csv):
+        if row and row[0] and row[0].lower() in ['mystic', 'science', 'skill', 'mutant', 'tech', 'cosmic']:
+            class_name = row[0].lower()
+            class_start_rows[class_name] = row_idx
 
-        first_col_cell = row[0].strip()
-        if first_col_cell and first_col_cell.lower() in ['mystic', 'science', 'skill', 'mutant', 'tech', 'cosmic']:
-            current_category = first_col_cell
-            # Process this class section
-            class_start_row = row_idx
-            row_idx += 1  # Move to the next row to start processing class champions
+    # Calculate the actual ranking by counting champions column by column for each class
+    for class_name, start_row in class_start_rows.items():
+        # Find the end of this class section (next class header or end of file)
+        next_class_start = len(champion_tier_list_csv)
+        for next_row_idx in range(start_row + 1, len(champion_tier_list_csv)):
+            next_row = champion_tier_list_csv[next_row_idx]
+            if next_row and next_row[0] and next_row[0].lower() in ['mystic', 'science', 'skill', 'mutant', 'tech', 'cosmic']:
+                next_class_start = next_row_idx
+                break
 
-            # For each class, count champions column by column to assign ranks
-            max_cols = max(len(row) for row in champion_tier_list_csv[class_start_row:class_start_row+100] if row)
-            max_cols = min(max_cols, len(tier_names) + 1)  # Don't exceed expected columns
+        # Calculate number of champions in each column for this class to determine base rank numbers
+        column_counts = [0] * len(tier_names)  # Initialize to zero for each column
 
-            # Calculate rankings: count all champions in each column sequentially
-            current_rank = 1  # Start assigning rank numbers from 1
+        # First pass: count champions in each column to calculate base rankings
+        for col_idx in range(1, len(tier_names) + 1):  # Columns 1 to number of tiers
+            for row_idx in range(start_row, next_class_start):  # SAME AS SECOND PASS - use start_row, not start_row + 1
+                row = champion_tier_list_csv[row_idx]
+                # Check if this row has data in the current column
+                if col_idx < len(row) and row[col_idx] and row[col_idx].strip():
+                    column_counts[col_idx - 1] += 1
 
-            # Process each column in the class section
-            for col_idx in range(1, max_cols):  # Skip first column as it contains class name
-                # Process this column from the start until we find an empty cell
-                col_row_offset = 0
-                col_has_content = True
+        # Calculate starting rank for each column (cumulative)
+        column_start_ranks = []
+        cumulative_rank = 1
+        for count in column_counts:
+            column_start_ranks.append(cumulative_rank)
+            cumulative_rank += count
 
-                while col_has_content:
-                    actual_row_idx = class_start_row + col_row_offset
-                    if actual_row_idx >= len(champion_tier_list_csv):
-                        break
+        # Second pass: assign actual champions with their proper ranks
+        for col_idx in range(1, len(tier_names) + 1):  # Columns 1 to number of tiers
+            rank_counter = column_start_ranks[col_idx - 1]  # Start at the calculated rank
 
-                    current_row = champion_tier_list_csv[actual_row_idx]
-                    if len(current_row) > col_idx and current_row[col_idx] and current_row[col_idx].strip():
-                        cell_value = current_row[col_idx].strip()
+            for row_idx in range(start_row, next_class_start):  # START AT start_row, not start_row + 1
+                row = champion_tier_list_csv[row_idx]
 
-                        emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
-                        symbols = emoji_pattern.findall(cell_value)
-                        clean_name = emoji_pattern.sub('', cell_value).strip()
+                # Check if this row has data in the current column
+                if col_idx < len(row) and row[col_idx] and row[col_idx].strip():
+                    cell_value = row[col_idx].strip()
 
-                        if clean_name:
-                            name_key = clean_name.lower()
-                            symbol_overrides = known_champion_symbols.get(name_key, {})
+                    emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
+                    symbols = emoji_pattern.findall(cell_value)
+                    clean_name = emoji_pattern.sub('', cell_value).strip()
 
-                            champions_data[name_key] = {
-                                "name": clean_name,
-                                "class": current_category,
-                                "rank": current_rank,  # This is the ranking number
-                                "tier": tier_names[col_idx - 1] if col_idx - 1 < len(tier_names) else "Information",
-                                "ranking_display": f"{current_category} ({tier_names[col_idx - 1] if col_idx - 1 < len(tier_names) else 'Information'})",
-                                "ranking_depends_on_awakening": symbol_overrides.get('ranking_depends_on_awakening', '🌟' in symbols),
-                                "ranking_depends_on_signature": symbol_overrides.get('ranking_depends_on_signature', '🚀' in symbols),
-                                "top_candidate_for_ascension": symbol_overrides.get('top_candidate_for_ascension', '💎' in symbols),
-                                "difficult_as_7star": symbol_overrides.get('difficult_as_7star', '🌹' in symbols),
-                                "specific_relic_needed": symbol_overrides.get('specific_relic_needed', '💾' in symbols),
-                                "early_prediction": symbol_overrides.get('early_prediction', '🎲' in symbols),
-                                "other_symbols": [s for s in symbols if s not in ['🌟', '🚀', '💎', '🌹', '💾', '🎲']],
-                                "battlegrounds_rating": None, # Will be filled by matching
-                                "battlegrounds_type": None, # Will be filled by matching
-                                "source": "champion_tier_list"
-                            }
+                    if clean_name:
+                        name_key = clean_name.lower()
+                        symbol_overrides = known_champion_symbols.get(name_key, {})
 
-                        current_rank += 1  # Move to next rank number
-                        col_row_offset += 1
-                    else:
-                        col_has_content = False  # This column is done for this class section
+                        tier = tier_names[col_idx - 1] if col_idx - 1 < len(tier_names) else "Information"
 
-        else:
-            row_idx += 1  # Continue looking for class headers
+                        champions_data[name_key] = {
+                            "name": clean_name,
+                            "class": class_name.title(),
+                            "rank": rank_counter, # Sequential rank within column
+                            "tier": tier,
+                            "ranking_display": f"{class_name.title()} ({tier})",
+                            "ranking_depends_on_awakening": symbol_overrides.get('ranking_depends_on_awakening', '🌟' in symbols),
+                            "ranking_depends_on_signature": symbol_overrides.get('ranking_depends_on_signature', '🚀' in symbols),
+                            "top_candidate_for_ascension": symbol_overrides.get('top_candidate_for_ascension', '💎' in symbols),
+                            "difficult_as_7star": symbol_overrides.get('difficult_as_7star', '🌹' in symbols),
+                            "specific_relic_needed": symbol_overrides.get('specific_relic_needed', '💾' in symbols),
+                            "early_prediction": symbol_overrides.get('early_prediction', '🎲' in symbols),
+                            "other_symbols": [s for s in symbols if s not in ['🌟', '🚀', '💎', '🌹', '💾', '🎲']],
+                            "battlegrounds_rating": None, # Will be filled by matching
+                            "battlegrounds_type": None, # Will be filled by matching
+                            "source": "champion_tier_list"
+                        }
+
+                    rank_counter += 1
 
     # Now match battlegrounds data to champions in the main sheet
     # Track which main sheet champions have already been matched to prevent double-matching
     matched_main_champions = set()
-    
+
     # First, match exact names
     for bg_name, bg_data in list(battlegrounds_data.items()):
         if bg_name in champions_data:
@@ -341,7 +347,23 @@ def build_champion_database():
                 'spidey supreme': 'spider-man (supreme)',
                 'spider-man (supreme)': 'spidey supreme',
                 'sigil witch': 'scarlet witch (sigil)',
-                'scarlet witch (sigil)': 'sigil witch'
+                'scarlet witch (sigil)': 'sigil witch',
+                'modok': 'm.o.d.o.k.',
+                'm.o.d.o.k.': 'modok',
+                'chee\'ilth': 'chee ilth',
+                'chee ilth': 'chee\'ilth',
+                'b.w.d.o.': 'black widow (deadly origins)',
+                'black widow (deadly origins)': 'b.w.d.o.',
+                'cgr': 'cosmic ghost rider',
+                'cosmic ghost rider': 'cgr',
+                'iim iron doom': 'iron man (infamous)',
+                'iron man (infamous)': 'iim iron doom',
+                'deathless kg': 'deathless king groot',
+                'deathless king groot': 'deathless kg',
+                'spider-man': 'spider-man (classic)',
+                'spider-man (classic)': 'spider-man',
+                'iron man iw': 'iron man (infinity war)',
+                'iron man (infinity war)': 'iron man iw'
             }
             
             bg_normalized = bg_name.lower().strip()
@@ -359,17 +381,49 @@ def build_champion_database():
             # Process the names to remove common prefixes for additional similarity checking
             bg_no_prefix = bg_name.lower().replace('mr.', '').replace('dr.', '').replace('captain ', '').strip()
             existing_no_prefix = existing_name.lower().replace('mr.', '').replace('dr.', '').replace('captain ', '').strip()
-            
+
             # Calculate ratio without prefixes to avoid prefix-based mismatches
             prefix_removed_ratio = SequenceMatcher(None, bg_no_prefix, existing_no_prefix).ratio()
-            
+
             # Use the higher of the two ratios
             ratio = max(ratio, prefix_removed_ratio)
-            
+
+            # Additional normalization to handle special character conversions
+            # Convert "M.O.D.O.K." to "modok", "B.W.D.O." to "bwdob"
+            bg_normalized_no_dots = bg_no_prefix.replace('.', '').replace(' ', '')
+            existing_normalized_no_dots = existing_no_prefix.replace('.', '').replace(' ', '')
+
+            # Calculate similarity without dots and spaces
+            normalized_dots_ratio = SequenceMatcher(None, bg_normalized_no_dots, existing_normalized_no_dots).ratio()
+            ratio = max(ratio, normalized_dots_ratio)
+
+            # Handle "spider-man (supreme)" to "spidey supreme" type conversions
+            # Convert common patterns where parentheses indicate an alias
+            def normalize_parentheses(name):
+                # Look for patterns like "word (alias)" and convert to "alias word" or just "alias"
+                import re
+                match = re.search(r'(.+?)\s*\((.+?)\)', name)
+                if match:
+                    main_name = match.group(1).strip()
+                    alias = match.group(2).strip()
+                    # Check if the alias is a known short form of the main name
+                    if 'supreme' in alias.lower() and 'spider' in main_name.lower():
+                        return alias.replace(' ', '')  # Convert to "supreme" or "spidey"
+                    # More general conversion: if alias seems to be a nickname of main_name
+                    if alias.lower() in ['supreme', 'classic', 'stark', 'iw', 'infinity war']:
+                        return alias.replace(' ', '')
+                return name
+
+            bg_norm_paren = normalize_parentheses(bg_no_prefix)
+            existing_norm_paren = normalize_parentheses(existing_no_prefix)
+
+            paren_ratio = SequenceMatcher(None, bg_norm_paren, existing_norm_paren).ratio()
+            ratio = max(ratio, paren_ratio)
+
             # Look for shared special terms that would indicate a strong match
             bg_lower = bg_name.lower()
             existing_lower = existing_name.lower()
-            
+
             # Common special terms found in champion names
             terms = ['sigil', 'supreme', 'future', 'movie', 'deathless', 'stark']
             shared_terms = [term for term in terms if term in bg_lower and term in existing_lower]
