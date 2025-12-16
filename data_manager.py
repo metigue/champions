@@ -21,6 +21,12 @@ class DataManager:
         
         # Illuminati's sheet with champions ranked in columns (Nico #1 mystic, Tigra #2 mystic, etc.)
         illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/10OeQixQCrMKuw-pa3-LDUOQO70WGAFYROPu825Kr-eo/export?format=csv&gid=323504536"
+
+        # New Champion Tier list from the prompt
+        champion_tier_list_url = "https://docs.google.com/spreadsheets/d/1-jx73TSUeauTe15taA5vNmCUCxjQvrf83aPPu56O3Jw/export?format=csv&gid=0"
+
+        # New Battlegrounds Tier list from the prompt
+        battlegrounds_tier_list_url = "https://docs.google.com/spreadsheets/d/154iFgpTI6lfBLgXariI3W1pLjS2wXSsiMademauXzLU/export?format=csv&gid=0"
         
         all_champions = {}
         
@@ -39,10 +45,189 @@ class DataManager:
             logging.info(f"Loaded {len(illuminati_data)} champions from Illuminati's ranking sheet")
         except Exception as e:
             logging.error(f"Error fetching Illuminati's ranking spreadsheet: {e}")
+
+        # Process the new Champion Tier list
+        try:
+            champion_tier_list_data = self._fetch_champion_tier_list_sheet(champion_tier_list_url)
+            all_champions['champion_tier_list'] = champion_tier_list_data
+            logging.info(f"Loaded {len(champion_tier_list_data)} champions from the Champion Tier List sheet")
+        except Exception as e:
+            logging.error(f"Error fetching Champion Tier List spreadsheet: {e}")
+
+        # Process the new Battlegrounds Tier list
+        try:
+            battlegrounds_tier_list_data = self._fetch_battlegrounds_tier_list_sheet(battlegrounds_tier_list_url)
+            all_champions['battlegrounds_tier_list'] = battlegrounds_tier_list_data
+            logging.info(f"Loaded {len(battlegrounds_tier_list_data)} champions from the Battlegrounds Tier List sheet")
+        except Exception as e:
+            logging.error(f"Error fetching Battlegrounds Tier List spreadsheet: {e}")
         
         # Store combined champion data
         self.champions_data = all_champions
         return self.champions_data
+    
+    def _fetch_battlegrounds_tier_list_sheet(self, url: str) -> List[Champion]:
+        """Fetch data from the Battlegrounds Tier list spreadsheet and parse it."""
+        response = requests.get(url)
+        response.raise_for_status()
+
+        csv_content = io.StringIO(response.text)
+        csv_reader = csv.reader(csv_content)
+        rows = list(csv_reader)
+
+        champions = []
+        current_role = None  # e.g., "Dual Threat", "Attackers", "Defenders"
+        
+        # Helper to find class headers in a given row
+        def find_class_headers(row):
+            # Assumes class headers like 'Mystic', 'Science' are in row 0
+            class_headers = {}
+            for col_idx, cell_value in enumerate(row):
+                if cell_value.strip().lower() in ['mystic', 'science', 'skill', 'mutant', 'tech', 'cosmic']:
+                    class_headers[col_idx] = cell_value.strip()
+            return class_headers
+
+        class_headers = {}
+        # Find the row containing the class headers (Mystic, Science, etc.)
+        # This can be row 0 for the first section.
+        if len(rows) > 0:
+            class_headers = find_class_headers(rows[0])
+
+        for row_idx, row in enumerate(rows):
+            if not row:
+                continue
+
+            first_col_value = row[0].strip()
+
+            if first_col_value in ["Dual Threat", "Attackers", "Defenders"]:
+                current_role = first_col_value
+                # The class headers might be redefined or appear shortly after this,
+                # or be consistent from the top. We'll re-evaluate them.
+                # For this specific sheet, they are consistent on row 0.
+                continue
+
+            if not current_role: # Skip rows before any role is identified
+                continue
+            
+            # Identify Tier names (Tier Above All, Scorching, Super Hot, Hot, Mild, Information)
+            # These are in the first column for each section
+            if first_col_value in ["Tier Above All", "Scorching", "Super Hot", "Hot", "Mild", "Information"]:
+                tier = first_col_value
+                # Now process champion data in this row for the current tier and role
+                for col_idx in range(1, len(row)): # Start from second column
+                    if col_idx in class_headers: # Check if this column corresponds to a known class
+                        category = class_headers[col_idx]
+                        cell_value = row[col_idx].strip()
+
+                        if not cell_value:
+                            continue
+                        
+                        # Extract champion name and rating (e.g., "Nico Minoru - 10")
+                        parts = cell_value.split('-', 1)
+                        if len(parts) >= 2:
+                            name_part = parts[0].strip()
+                            rating_part_str = parts[1].strip()
+                            
+                            rating = None
+                            # Extract rating: if starts with '1' followed by digit, it's 10, otherwise first digit
+                            if rating_part_str.startswith('1') and len(rating_part_str) > 1 and rating_part_str[1].isdigit():
+                                rating = 10
+                            elif rating_part_str and rating_part_str[0].isdigit():
+                                rating = int(rating_part_str[0])
+
+                            # Extract symbols from the original cell value
+                            emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
+                            symbols = emoji_pattern.findall(cell_value)
+
+                            if name_part:
+                                champion = Champion(
+                                    name=name_part,
+                                    tier=tier,
+                                    category=category,
+                                    rating=rating,
+                                    symbols=list(set(symbols)),
+                                    source="battlegrounds_tier_list",
+                                    role=current_role # Add the role here
+                                )
+                                champions.append(champion)
+                        else: # Handle cases where there's a name but no rating (e.g. just a champion name)
+                            # Extract symbols from the original cell value
+                            emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
+                            symbols = emoji_pattern.findall(cell_value)
+                            clean_name = emoji_pattern.sub('', cell_value).strip()
+
+                            if clean_name:
+                                champion = Champion(
+                                    name=clean_name,
+                                    tier=tier,
+                                    category=category,
+                                    rating=None, # No explicit rating
+                                    symbols=list(set(symbols)),
+                                    source="battlegrounds_tier_list",
+                                    role=current_role
+                                )
+                                champions.append(champion)
+        return champions
+    
+    def _fetch_champion_tier_list_sheet(self, url: str) -> List[Champion]:
+        """Fetch data from the new Champion Tier list spreadsheet."""
+        response = requests.get(url)
+        response.raise_for_status()
+
+        csv_content = io.StringIO(response.text)
+        csv_reader = csv.reader(csv_content)
+        rows = list(csv_reader)
+
+        champions = []
+
+        # Assuming header rows are 0-7, and tier names are in row 6
+        # Example: ,Tier Above All,Scorching,Super Hot,Hot,Mild,Information
+        tier_names = [tier.strip() for tier in rows[6][1:] if tier.strip()]
+
+        # Data starts from row 8
+        current_category = None
+        for row_idx in range(8, len(rows)):
+            row = rows[row_idx]
+            if not row or not row[0].strip():
+                continue # Skip empty rows or rows without a category
+
+            # Check if the first column is a new category (Mystic, Science, etc.)
+            first_col_cell = row[0].strip()
+            if first_col_cell and first_col_cell.lower() in ['mystic', 'science', 'skill', 'mutant', 'tech', 'cosmic']:
+                current_category = first_col_cell
+                # Continue to process champions in this category
+            elif not current_category:
+                # If there's no current category established yet, skip this row
+                continue
+
+            # Iterate through the columns for champion names within the current category
+            # Start from the second column (index 1) as the first is the category or empty
+            for col_idx in range(1, len(row)):
+                cell_value = row[col_idx].strip()
+                if not cell_value:
+                    continue
+
+                # The column index directly maps to the tier_names if aligned
+                if col_idx - 1 < len(tier_names):
+                    tier = tier_names[col_idx - 1]
+                else:
+                    tier = "Information"  # Default if tier mapping is off
+
+                # Extract champion name and symbols
+                emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\u2600-\u27BF]+')
+                symbols = emoji_pattern.findall(cell_value)
+                clean_name = emoji_pattern.sub('', cell_value).strip()
+
+                if clean_name:
+                    champion = Champion(
+                        name=clean_name,
+                        tier=tier,
+                        category=current_category,
+                        symbols=list(set(symbols)),
+                        source="champion_tier_list"
+                    )
+                    champions.append(champion)
+        return champions
     
     def _fetch_vega_sheet(self, url: str) -> List[Champion]:
         """Fetch data from the Vega BG sheet with numerical scores (dual threat, attack, defense)"""

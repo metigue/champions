@@ -75,7 +75,7 @@ class DataManager:
             logging.info(f"Vega (BGs): {len(vega_champions)}, Illuminati (Ranking): {len(illuminati_champions)}")
             
             # Load additional champions from the list that aren't in the tier list
-            self.load_additional_champions()
+            # self.load_additional_champions()
             
         except FileNotFoundError:
             logging.error(f"Database file {self.db_file} not found. Run build_database.py first.")
@@ -163,7 +163,7 @@ class DataManager:
     
     def _normalize_name(self, name: str) -> str:
         """Normalize champion name for comparison"""
-        return re.sub(r'[^a-z0-9]', '', name.lower())
+        return name.lower().strip()
 
     def _levenshtein_distance(self, s1, s2):
         m, n = len(s1), len(s2)
@@ -254,12 +254,18 @@ class DataManager:
 
         # Special case for "Doom"
         if name_lower == "doom":
-            return [self.champion_lookup["doctor doom"]]
+            return [self.champion_lookup.get("doctor doom")]
 
         # Direct lookup first
         if name_lower in self.champion_lookup:
             return [self.champion_lookup[name_lower]]
 
+        # Try close matches with get_close_matches
+        all_champion_names = list(self.champion_lookup.keys())
+        close_matches = get_close_matches(name_lower, all_champion_names, n=1, cutoff=0.7)
+        if close_matches:
+            return [self.champion_lookup[close_matches[0]]]
+            
         # Try fuzzy matching with close matches using multiple strategies
         best_match = None
         best_score = -1
@@ -278,7 +284,7 @@ class DataManager:
 
             # Boost score for prefix matches
             if normalized_key.startswith(name_lower):
-                score += 0.1
+                score += 0.2
 
             if score > best_score:
                 best_score = score
