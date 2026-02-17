@@ -5,6 +5,7 @@ from champion_model import Champion, ChampionRecommendation, TIER_SCORES, calcul
 import logging
 import re
 
+
 class CommandHandler:
     """Handles all bot commands and their logic"""
     
@@ -21,27 +22,35 @@ class CommandHandler:
     
     def format_champion_info(self, champion: Champion) -> str:
         """Format champion information for Discord display"""
-        info = f"**{champion.name}**\n"
+        info = f"**{champion.name}** ({champion.category})\n\n"
         
-        # Show overall rank within class
+        # Show all three rankings prominently
+        info += "**Rankings:**\n"
+        
+        # Overall rank
         if champion.overall_rank:
-            info += f"Overall: #{champion.overall_rank} {champion.category}\n"
+            info += f"Overall: #{champion.overall_rank}\n"
         
-        # Show PvE and PvP rankings
-        if champion.pve_rank or champion.pvp_rank:
-            info += "\n**Rankings:**\n"
-            if champion.pve_rank:
-                info += f"  PvE: #{champion.pve_rank} {champion.category}\n"
-            if champion.pvp_rank:
-                info += f"  PvP: #{champion.pvp_rank} {champion.category}\n"
+        # PvE rank
+        if champion.pve_rank:
+            pve_tier = champion.pve_tier or ""
+            info += f"PvE: #{champion.pve_rank}"
+            if pve_tier:
+                info += f" ({pve_tier})"
+            info += "\n"
         
-        # Class
-        info += f"\nClass: {champion.category}\n"
+        # PvP rank
+        if champion.pvp_rank:
+            pvp_tier = champion.pvp_tier or ""
+            info += f"PvP: #{champion.pvp_rank}"
+            if pvp_tier:
+                info += f" ({pvp_tier})"
+            info += "\n"
         
         # Show Battlegrounds rating with type
         if champion.rating:
             bg_type = champion.battlegrounds_type or "Dual Threat"
-            info += f"Battlegrounds: {bg_type} - {champion.rating}/10\n"
+            info += f"\n**Battlegrounds:** {bg_type} - {champion.rating}/10\n"
         
         # Translate emoji symbols to their meanings
         if champion.symbols:
@@ -75,38 +84,46 @@ class CommandHandler:
                 if symbol in symbols_meanings:
                     translated_notes.append(symbols_meanings[symbol])
             if translated_notes:
-                info += f"Notes: {', '.join(translated_notes)}\n"
+                info += f"\n**Notes:** {', '.join(translated_notes)}\n"
         
         return info
     
     def get_champion_rankup_info(self, name: str) -> str:
         """Get specific rankup information for a champion"""
         champions = self.data_manager.get_champion_by_name(name)
-        
         if not champions:
             return f"Sorry, I couldn't find information about '{name}'. Please check the spelling and try again."
         
         champion = champions[0]
+        response = f"**{champion.name}** ({champion.category})\n\n"
         
-        response = f"**Rank-up Information for {champion.name}:**\n\n"
+        # Show all three rankings prominently
+        response += "**Rankings:**\n"
         
-        # Show overall rank
+        # Overall rank
         if champion.overall_rank:
-            response += f"**Overall: #{champion.overall_rank} {champion.category}**\n"
+            response += f"Overall: #{champion.overall_rank}\n"
         
-        # Show PvE and PvP rankings
-        if champion.pve_rank or champion.pvp_rank:
-            response += "\n**Class Rankings:**\n"
-            if champion.pve_rank:
-                response += f"  PvE: #{champion.pve_rank} {champion.category}\n"
-            if champion.pvp_rank:
-                response += f"  PvP: #{champion.pvp_rank} {champion.category}\n"
+        # PvE rank
+        if champion.pve_rank:
+            pve_tier = champion.pve_tier or ""
+            response += f"PvE: #{champion.pve_rank}"
+            if pve_tier:
+                response += f" ({pve_tier})"
+            response += "\n"
         
-        # Class and BG rating
-        response += f"\nClass: {champion.category}\n"
+        # PvP rank
+        if champion.pvp_rank:
+            pvp_tier = champion.pvp_tier or ""
+            response += f"PvP: #{champion.pvp_rank}"
+            if pvp_tier:
+                response += f" ({pvp_tier})"
+            response += "\n"
+        
+        # Battlegrounds rating
         if champion.rating:
             bg_type = champion.battlegrounds_type or "Dual Threat"
-            response += f"Battlegrounds: {bg_type} - {champion.rating}/10\n"
+            response += f"\n**Battlegrounds:** {bg_type} - {champion.rating}/10\n"
         
         # Special notes
         if champion.symbols:
@@ -140,31 +157,30 @@ class CommandHandler:
                 if symbol in symbols_meanings:
                     translated_notes.append(symbols_meanings[symbol])
             if translated_notes:
-                response += f"\nSpecial Notes: {', '.join(translated_notes)}\n"
+                response += f"\n**Notes:** {', '.join(translated_notes)}\n"
         
         # Rank-up advice based on overall rank
         if champion.overall_rank:
             if champion.overall_rank <= 3:
-                advice = "TOP TIER - Definitely prioritize rank-up!"
+                advice = "TOP TIER - Definitely prioritize!"
             elif champion.overall_rank <= 10:
-                advice = "HIGH TIER - Strong recommendation for rank-up"
+                advice = "HIGH TIER - Strong recommendation"
             elif champion.overall_rank <= 20:
                 advice = "MEDIUM TIER - Consider for rank-up"
             elif champion.overall_rank <= 30:
-                advice = "LOWER TIER - Lower priority for rank-up"
+                advice = "LOWER TIER - Lower priority"
             else:
-                advice = "LOW TIER - Assess based on your needs"
+                advice = "LOW TIER - Assess based on needs"
         else:
             advice = "Assess based on your team composition"
         
-        response += f"\n**Rank-up Priority: {advice}**\n"
+        response += f"\n**Recommendation:** {advice}\n"
         
         return response
     
     def get_pull_recommendations(self) -> str:
         """Generate champion pull recommendations"""
         combined_top = self.data_manager.get_top_champions_by_tier('combined', 10)
-        
         recommendations = "Here are the top champion pull recommendations based on current meta:\n\n"
         
         if combined_top:
@@ -183,7 +199,6 @@ class CommandHandler:
     def get_rankup_recommendations(self) -> str:
         """Generate rank-up recommendations"""
         combined_top = self.data_manager.get_top_champions_by_tier('combined', 10)
-        
         recommendations = "Here are champions you should consider ranking up based on current meta:\n\n"
         
         if combined_top:
@@ -227,10 +242,8 @@ class CommandHandler:
                 # Score based on overall rank (lower is better)
                 overall = champion.overall_rank or 999
                 rating = champion.rating or 0
-                
                 # Score formula: lower rank + higher rating = better
                 total_score = 1000 - overall + rating * 10
-            
             champion_scores.append((champion, total_score))
         
         # Sort by score (higher is better)
@@ -241,19 +254,16 @@ class CommandHandler:
         
         for i, (champion, score) in enumerate(champion_scores, 1):
             response += f"{i}. **{champion.name}**\n"
-            
             if champion.source == "default":
                 response += f"   - Status: Not in tier list\n\n"
             else:
                 if champion.overall_rank:
                     response += f"   - Overall: #{champion.overall_rank} {champion.category}\n"
-                
                 if champion.pve_rank or champion.pvp_rank:
                     if champion.pve_rank:
                         response += f"   - PvE: #{champion.pve_rank} {champion.category}\n"
                     if champion.pvp_rank:
                         response += f"   - PvP: #{champion.pvp_rank} {champion.category}\n"
-                
                 if champion.rating:
                     bg_type = champion.battlegrounds_type or "Dual Threat"
                     response += f"   - BG: {bg_type} - {champion.rating}/10\n"
@@ -263,7 +273,6 @@ class CommandHandler:
         if len(champion_scores) >= 2:
             top = champion_scores[0]
             second = champion_scores[1]
-            
             if top[1] > second[1] + 50:
                 response += f"I recommend you rank up **{top[0].name}**."
             elif abs(top[1] - second[1]) <= 50:
@@ -287,7 +296,7 @@ class MCOCCommands(commands.Cog):
         if champions:
             for champion in champions:
                 info = self.command_handler.format_champion_info(champion)
-                await ctx.send(f"```\n{info}\n```")
+                await ctx.send(info)
         else:
             await ctx.send(f"Sorry, I couldn't find information about '{champion_name}'. Please check the spelling and try again.")
     
