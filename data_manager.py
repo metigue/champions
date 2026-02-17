@@ -5,6 +5,10 @@ import re
 import logging
 from typing import List, Dict
 from champion_model import Champion, calculate_overall_tier, TIER_SCORES
+try:
+    from config import SHEET_URLS
+except ImportError:
+    SHEET_URLS = None
 
 # Comprehensive alias mapping for champion name variations between sheets
 # BG sheet uses abbreviations and different formats than PvE/PvP sheets
@@ -128,9 +132,15 @@ class DataManager:
     
     def fetch_champions_from_spreadsheets(self) -> Dict[str, List[Champion]]:
         """Fetch and process champion data from all three public spreadsheets"""
-        bgs_url = "https://docs.google.com/spreadsheets/d/111Xo45fxQxDzlWjjtvu1KqdNea0hHeRDdpbTrgIDS4A/export?format=csv&gid=0"
-        pve_url = "https://docs.google.com/spreadsheets/d/1C-jcb0zED4VoSZ26lVTW7KKyE17u3Cj1kPZdqn8MAnU/export?format=csv&gid=0"
-        pvp_url = "https://docs.google.com/spreadsheets/d/1fZ4nZeBZJjmPRSyWC1LY9XubfI3pPyJeYP2Aw9KVgJU/export?format=csv&gid=0"
+        # Use config URLs if available, otherwise fall back to hardcoded
+        if SHEET_URLS:
+            bgs_url = SHEET_URLS.get('battlegrounds')
+            pve_url = SHEET_URLS.get('pve')
+            pvp_url = SHEET_URLS.get('pvp')
+        else:
+            bgs_url = "https://docs.google.com/spreadsheets/d/111Xo45fxQxDzlWjjtvu1KqdNea0hHeRDdpbTrgIDS4A/export?format=csv&gid=0"
+            pve_url = "https://docs.google.com/spreadsheets/d/1C-jcb0zED4VoSZ26lVTW7KKyE17u3Cj1kPZdqn8MAnU/export?format=csv&gid=0"
+            pvp_url = "https://docs.google.com/spreadsheets/d/1fZ4nZeBZJjmPRSyWC1LY9XubfI3pPyJeYP2Aw9KVgJU/export?format=csv&gid=0"
         
         all_champions = {}
         
