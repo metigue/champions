@@ -97,7 +97,14 @@ CHAMPION_ALIASES = {
     'wolverineweaponx': 'wolverineweaponx',
     'bwdo': 'blackwidowdeadlyorigin',
     'blackwidowdeadlyorigin': 'blackwidowdeadlyorigin',
-    'blackwidowdeadlyorigins': 'blackwidowdeadlyorigin',  # plural form  # Unique name
+    'blackwidowdeadlyorigins': 'blackwidowdeadlyorigin',  # plural form
+
+    # Common search aliases
+    'strange': 'doctorstrange',
+    'ds': 'doctorstrange',
+    'drstrange': 'doctorstrange',
+    'karo': 'karolinadean',
+    'nico': 'nicominoru',
     'magnetored': 'magnetored',  # Different from magneto
     'magnetowhite': 'magnetohouseofx',
     'magnetohouseofx': 'magnetohouseofx',
