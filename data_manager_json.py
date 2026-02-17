@@ -49,11 +49,17 @@ class DataManager:
                 champion = Champion(
                     name=champion_data['name'],
                     tier=champion_data['tier'],
-                    category=champion_data['ranking_display'],  # This includes the ranking like "Mystic #1"
+                    category=champion_data['class'],  # Just the class name, e.g., "Mystic"
                     rating=champion_data['battlegrounds_rating'],
                     symbols=symbols,
                     source=source,
-                    battlegrounds_type=champion_data.get('battlegrounds_type')
+                    battlegrounds_type=champion_data.get('battlegrounds_type'),
+                    overall_rank=champion_data.get('rank'),
+                    pve_rank=champion_data.get('pve_rank'),
+                    pvp_rank=champion_data.get('pvp_rank'),
+                    pve_tier=champion_data.get('pve_tier'),
+                    pvp_tier=champion_data.get('pvp_tier'),
+                    overall_tier=champion_data.get('tier')
                 )
                 
                 champions.append(champion)
@@ -92,11 +98,18 @@ class DataManager:
         if name_lower in self.champion_lookup:
             return [self.champion_lookup[name_lower]]
         
-        # Fuzzy matching
+        # Fuzzy matching - substring match in key or name
         results = []
         for key, champion in self.champion_lookup.items():
             if name_lower in key or name_lower in champion.name.lower():
                 results.append(champion)
+        
+        # If no results, try removing spaces and common suffixes
+        if not results:
+            simplified = name_lower.replace(' ', '').replace('-', '')
+            for key, champion in self.champion_lookup.items():
+                if simplified in key.replace(' ', ''):
+                    results.append(champion)
         
         return results
     
