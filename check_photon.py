@@ -4,7 +4,7 @@ import io
 
 # Debug script to check if Photon is in the Battlegrounds sheet
 
-vega_bgs_url = "https://docs.google.com/spreadsheets/d/1KzfdzI_HxK7zk_eTwmdwI5G84k9HSIYPzAMSPgGYjUE/export?format=csv&gid=0"
+vega_bgs_url = "https://docs.google.com/spreadsheets/d/1gJhNbqVQbZwvVH6oE4QpefBolphMezZtAG9Kuj3oOZ0/export?format=csv&gid=0"
 
 print("Checking if Photon exists in Battlegrounds sheet...")
 bg_response = requests.get(vega_bgs_url)

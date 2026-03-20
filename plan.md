@@ -30,8 +30,8 @@ Create a Discord bot that provides MARVEL Contest of Champions (MCoC) players wi
 
 ### 2.1 Web Scraping Integration
 - Access both spreadsheet sources via CSV export URLs:
-  - "Vega's BGs Tierlist" (https://docs.google.com/spreadsheets/d/1KzfdzI_HxK7zk_eTwmdwI5G84k9HSIYPzAMSPgGYjUE/export?format=csv&gid=0)
-  - "MCoC Illuminati Tier List" (https://docs.google.com/spreadsheets/d/10OeQixQCrMKuw-pa3-LDUOQO70WGAFYROPu825Kr-eo/export?format=csv&gid=323504536)
+  - "Vega's BGs Tierlist" (https://docs.google.com/spreadsheets/d/1gJhNbqVQbZwvVH6oE4QpefBolphMezZtAG9Kuj3oOZ0/export?format=csv&gid=0)
+  - "MCoC Illuminati Tier List" (https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0)
 - Extract champion data from both sheets
 - Handle different spreadsheet formats and structures
 

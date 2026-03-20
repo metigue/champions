@@ -8,8 +8,8 @@ def build_champion_database():
     """Build a comprehensive JSON database by combining data from both sheets"""
     
     # URLs for the spreadsheets
-    vega_bgs_url = "https://docs.google.com/spreadsheets/d/1KzfdzI_HxK7zk_eTwmdwI5G84k9HSIYPzAMSPgGYjUE/export?format=csv&gid=0"
-    illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/10OeQixQCrMKuw-pa3-LDUOQO70WGAFYROPu825Kr-eo/export?format=csv&gid=323504536"
+    vega_bgs_url = "https://docs.google.com/spreadsheets/d/1gJhNbqVQbZwvVH6oE4QpefBolphMezZtAG9Kuj3oOZ0/export?format=csv&gid=0"
+    illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0"
     
     # Fetch and parse both sheets
     print("Fetching Battlegrounds sheet...")

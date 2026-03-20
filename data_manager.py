@@ -138,9 +138,9 @@ class DataManager:
             pve_url = SHEET_URLS.get('pve')
             pvp_url = SHEET_URLS.get('pvp')
         else:
-            bgs_url = "https://docs.google.com/spreadsheets/d/111Xo45fxQxDzlWjjtvu1KqdNea0hHeRDdpbTrgIDS4A/export?format=csv&gid=0"
-            pve_url = "https://docs.google.com/spreadsheets/d/1C-jcb0zED4VoSZ26lVTW7KKyE17u3Cj1kPZdqn8MAnU/export?format=csv&gid=0"
-            pvp_url = "https://docs.google.com/spreadsheets/d/1fZ4nZeBZJjmPRSyWC1LY9XubfI3pPyJeYP2Aw9KVgJU/export?format=csv&gid=0"
+            bgs_url = "https://docs.google.com/spreadsheets/d/1gJhNbqVQbZwvVH6oE4QpefBolphMezZtAG9Kuj3oOZ0/export?format=csv&gid=0"
+            pve_url = "https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0"
+            pvp_url = "https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0"
         
         all_champions = {}
         

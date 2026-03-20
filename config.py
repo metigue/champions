@@ -8,9 +8,9 @@ COMMAND_PREFIX = "!"
 # To update: Get the sheet ID from the URL and use format:
 # https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}
 SHEET_URLS = {
-    "battlegrounds": "https://docs.google.com/spreadsheets/d/111Xo45fxQxDzlWjjtvu1KqdNea0hHeRDdpbTrgIDS4A/export?format=csv&gid=0",
-    "pve": "https://docs.google.com/spreadsheets/d/1C-jcb0zED4VoSZ26lVTW7KKyE17u3Cj1kPZdqn8MAnU/export?format=csv&gid=0",
-    "pvp": "https://docs.google.com/spreadsheets/d/1fZ4nZeBZJjmPRSyWC1LY9XubfI3pPyJeYP2Aw9KVgJU/export?format=csv&gid=0",
+    "battlegrounds": "https://docs.google.com/spreadsheets/d/1gJhNbqVQbZwvVH6oE4QpefBolphMezZtAG9Kuj3oOZ0/export?format=csv&gid=0",
+    "pve": "https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0",
+    "pvp": "https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0",
 }
 
 # Data refresh settings

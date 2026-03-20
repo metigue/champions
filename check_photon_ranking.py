@@ -4,7 +4,7 @@ import io
 
 # Debug script to check if Photon is in the Ranking sheet and what name it has
 
-illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/10OeQixQCrMKuw-pa3-LDUOQO70WGAFYROPu825Kr-eo/export?format=csv&gid=323504536"
+illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0"
 
 print("Checking if Photon exists in Ranking sheet...")
 rank_response = requests.get(illuminati_ranking_url)

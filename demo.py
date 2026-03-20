@@ -211,9 +211,9 @@ def main():
     
     # URLs for the spreadsheets
     # Actually, the first one is the BGs sheet with numbers (Vega's)
-    vega_bgs_url = "https://docs.google.com/spreadsheets/d/1KzfdzI_HxK7zk_eTwmdwI5G84k9HSIYPzAMSPgGYjUE/export?format=csv&gid=0"
+    vega_bgs_url = "https://docs.google.com/spreadsheets/d/1gJhNbqVQbZwvVH6oE4QpefBolphMezZtAG9Kuj3oOZ0/export?format=csv&gid=0"
     # The second one is the ranking sheet (Illuminati's)
-    illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/10OeQixQCrMKuw-pa3-LDUOQO70WGAFYROPu825Kr-eo/export?format=csv&gid=323504536"
+    illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0"
     
     print("Fetching data from Vega's BGs sheet (with numbers)...")
     try:

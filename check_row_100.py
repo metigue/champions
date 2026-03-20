@@ -3,7 +3,7 @@ import csv
 import io
 
 # URLs for the spreadsheets
-illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/10OeQixQCrMKuw-pa3-LDUOQO70WGAFYROPu825Kr-eo/export?format=csv&gid=323504536"
+illuminati_ranking_url = "https://docs.google.com/spreadsheets/d/1S1qrtmsVjfd-jkkHwjJcEj_tWvDrII49pv8-huomzgM/export?format=csv&gid=0"
 
 print("Fetching Ranking sheet to check row 100...")
 response = requests.get(illuminati_ranking_url)
